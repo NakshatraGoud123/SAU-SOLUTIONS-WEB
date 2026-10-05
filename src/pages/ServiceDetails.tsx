@@ -7,12 +7,14 @@ import { getService, getServicesForCategory } from '../data/services'
 import { useCommerce } from '../context/useCommerce'
 import PhotoImage from '../components/PhotoImage'
 import { servicePhotos } from '../data/imageCatalog'
+import { usePreferences } from '../context/usePreferences'
 
 export default function ServiceDetails() {
   const { serviceId } = useParams()
   const service = getService(serviceId)
   const [added, setAdded] = useState(false)
   const { addToCart } = useCommerce()
+  const { location } = usePreferences()
   const navigate = useNavigate()
 
   if (!service) {
@@ -32,7 +34,7 @@ export default function ServiceDetails() {
           <h1>{service.name}</h1>
           <p className="detail-description">{service.description}</p>
           <div className="detail-rating"><span><Star size={15} fill="currentColor" /> {service.rating}</span><span>{service.reviews} thoughtful reviews</span></div>
-          <div className="detail-benefits"><div><span><ShieldCheck size={18} /></span><div><strong>Carefully vetted</strong><small>Trusted by your neighbourhood</small></div></div><div><span><Clock3 size={18} /></span><div><strong>{service.eta}</strong><small>Choose a time that works for you</small></div></div><div><span><MapPin size={18} /></span><div><strong>Available nearby</strong><small>Serving Jaipur and the surrounding area</small></div></div></div>
+          <div className="detail-benefits"><div><span><ShieldCheck size={18} /></span><div><strong>Carefully vetted</strong><small>Trusted by your neighbourhood</small></div></div><div><span><Clock3 size={18} /></span><div><strong>{service.eta}</strong><small>Choose a time that works for you</small></div></div><div><span><MapPin size={18} /></span><div><strong>Available nearby</strong><small>{location ? `Serving ${location.label}` : 'Choose your area to see nearby availability'}</small></div></div></div>
         </div>
         <aside className="booking-card">
           <span className="booking-label">{service.kind === 'product' ? 'A GOOD THING TO HAVE' : 'YOUR NEXT GOOD EXPERIENCE'}</span>

@@ -16,12 +16,33 @@
   --blue-dark: #2855d5;
   --line: #e9edf4;
   --pale: #f7f9fc;
+  --teal: #19a99a;
+  --orchid: #b55ad2;
+  --page: #ffffff;
+  --surface: #ffffff;
+  --surface-soft: #f7f9fc;
+  --text: #17243b;
   --heading: 'Manrope', 'DM Sans', sans-serif;
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --navy: #e9f0ff;
+  --muted: #a5b5cf;
+  --blue: #7190ff;
+  --blue-dark: #5879ef;
+  --line: #293951;
+  --pale: #121f33;
+  --page: #0b1424;
+  --surface: #111e31;
+  --surface-soft: #0e192b;
+  --text: #e9f0ff;
 }
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: 92px; }
-body { margin: 0; min-width: 320px; min-height: 100vh; }
+body { margin: 0; min-width: 320px; min-height: 100vh; color: var(--text); background: var(--page); transition: color .22s, background-color .22s; }
 button, input { font: inherit; }
 button, a { -webkit-tap-highlight-color: transparent; }
 a { color: inherit; text-decoration: none; }

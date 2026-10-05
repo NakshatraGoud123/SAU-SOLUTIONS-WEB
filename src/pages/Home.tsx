@@ -60,7 +60,7 @@ export default function Home() {
       </section>
 
       <section className="container promo-panels">
-        <article className="partner-panel" id="partner"><span className="section-kicker">GROW WITH SAU</span><h2>Good work deserves<br />to find more people.</h2><p>Bring your business or professional skills to a neighbourhood that needs you.</p><Link className="button button-dark" to="/register?type=partner">Become a partner <ArrowRight size={15} /></Link><span className="partner-decoration"><Sparkles size={35} /></span></article>
+        <article className="partner-panel" id="partner"><span className="section-kicker">GROW WITH SAU</span><h2>Good work deserves<br />to find more people.</h2><p>Bring your business or professional skills to a neighbourhood that needs you.</p><Link className="button button-dark" to="/partner/register">Become a partner <ArrowRight size={15} /></Link><span className="partner-decoration"><Sparkles size={35} /></span></article>
         <article className="app-panel" id="download"><span className="app-icon"><Smartphone size={24} /></span><span className="section-kicker">SAU, WHEREVER YOU GO</span><h2>Your everyday,<br />in your pocket.</h2><p>We’re getting the SAU app ready. Join us here to explore everything in one place.</p><Link className="app-link" to="/register"><Download size={15} /> Get early access <ArrowRight size={14} /></Link><span className="app-decoration">s<span>.</span></span></article>
       </section>
 

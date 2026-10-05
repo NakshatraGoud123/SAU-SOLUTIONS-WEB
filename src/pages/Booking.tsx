@@ -5,8 +5,9 @@ import { useCommerce } from '../context/useCommerce'
 import { type Address } from '../data/commerce'
 import { getService } from '../data/services'
 import IconGlyph from '../components/IconGlyph'
+import { usePreferences } from '../context/usePreferences'
 
-const initialAddress: Address = { fullName: '', phone: '', line1: '', city: 'Jaipur', postalCode: '' }
+const initialAddress: Address = { fullName: '', phone: '', line1: '', city: '', postalCode: '' }
 const timeSlots = ['9:00 AM – 11:00 AM', '12:00 PM – 2:00 PM', '3:00 PM – 5:00 PM', '6:00 PM – 8:00 PM']
 const minBookingDate = new Date().toISOString().slice(0, 10)
 
@@ -15,8 +16,9 @@ export default function Booking() {
   const serviceId = params.get('service')
   const service = getService(serviceId ?? undefined)
   const { createBooking, customer } = useCommerce()
+  const { location } = usePreferences()
   const navigate = useNavigate()
-  const [address, setAddress] = useState<Address>({ ...initialAddress, fullName: customer?.name ?? '' })
+  const [address, setAddress] = useState<Address>({ ...initialAddress, fullName: customer?.name ?? '', city: location?.city ?? '' })
   const [date, setDate] = useState('')
   const [time, setTime] = useState('')
   const [error, setError] = useState('')
@@ -30,7 +32,8 @@ export default function Booking() {
       return
     }
     setError('')
-    const booking = createBooking(service.id, address, date, time)
+    const bookingAddress = { ...address, city: address.city || location?.city || '' }
+    const booking = createBooking(service.id, bookingAddress, date, time)
     navigate(`/orders?booking=${encodeURIComponent(booking.id)}`)
   }
 
@@ -50,7 +53,7 @@ export default function Booking() {
           <label>Full name<input required autoComplete="name" value={address.fullName} onChange={(event) => updateAddress('fullName', event.target.value)} /></label>
           <label>Phone number<input required inputMode="tel" autoComplete="tel" maxLength={14} value={address.phone} onChange={(event) => updateAddress('phone', event.target.value)} /></label>
           <label className="field-span">Street address<input required autoComplete="street-address" value={address.line1} onChange={(event) => updateAddress('line1', event.target.value)} /></label>
-          <label>City<input required autoComplete="address-level2" value={address.city} onChange={(event) => updateAddress('city', event.target.value)} /></label>
+          <label>City<input required autoComplete="address-level2" value={address.city || location?.city || ''} onChange={(event) => updateAddress('city', event.target.value)} /></label>
           <label>PIN code<input required inputMode="numeric" autoComplete="postal-code" maxLength={6} pattern="\d{6}" value={address.postalCode} onChange={(event) => updateAddress('postalCode', event.target.value)} /></label>
         </div>
         {error && <p className="form-error" role="alert">{error}</p>}

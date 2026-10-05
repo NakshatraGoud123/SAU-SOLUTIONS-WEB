@@ -5,12 +5,14 @@ import { motion } from 'framer-motion'
 import IconGlyph from './IconGlyph'
 import PhotoImage from './PhotoImage'
 import { heroPhoto } from '../data/imageCatalog'
+import { usePreferences } from '../context/usePreferences'
 
 const suggestions = ['Home cleaning', 'Electrician', 'Fresh groceries', 'Beauty at home']
 
 export default function Hero() {
   const [search, setSearch] = useState('')
   const navigate = useNavigate()
+  const { location, locationStatus } = usePreferences()
 
   function submitSearch(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -28,7 +30,7 @@ export default function Hero() {
             <label className="search-location">
               <MapPin size={19} />
               <span className="sr-only">Your location</span>
-              <input aria-label="Your location" defaultValue="Jaipur" />
+              <input aria-label="Your location" readOnly value={location?.label ?? (locationStatus === 'detecting' ? 'Detecting location...' : 'Set location')} />
             </label>
             <span className="search-divider" />
             <label className="search-query">

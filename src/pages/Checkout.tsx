@@ -4,13 +4,15 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useCommerce } from '../context/useCommerce'
 import { getCartTotal, type Address } from '../data/commerce'
 import { getService } from '../data/services'
+import { usePreferences } from '../context/usePreferences'
 
-const emptyAddress: Address = { fullName: '', phone: '', line1: '', city: 'Jaipur', postalCode: '' }
+const emptyAddress: Address = { fullName: '', phone: '', line1: '', city: '', postalCode: '' }
 
 export default function Checkout() {
   const { cart, placeOrder, customer } = useCommerce()
+  const { location } = usePreferences()
   const navigate = useNavigate()
-  const [address, setAddress] = useState<Address>({ ...emptyAddress, fullName: customer?.name ?? '' })
+  const [address, setAddress] = useState<Address>({ ...emptyAddress, fullName: customer?.name ?? '', city: location?.city ?? '' })
   const [error, setError] = useState('')
   const total = getCartTotal(cart, (id) => getService(id))
   const updateAddress = (field: keyof Address, value: string) => setAddress((current) => ({ ...current, [field]: value }))
@@ -23,7 +25,8 @@ export default function Checkout() {
       return
     }
     setError('')
-    const order = placeOrder(address)
+    const orderAddress = { ...address, city: address.city || location?.city || '' }
+    const order = placeOrder(orderAddress)
     navigate(`/tracking?id=${encodeURIComponent(order.id)}`)
   }
 
@@ -39,7 +42,7 @@ export default function Checkout() {
           <label>Full name<input required autoComplete="name" value={address.fullName} onChange={(event) => updateAddress('fullName', event.target.value)} /></label>
           <label>Phone number<input required inputMode="tel" autoComplete="tel" maxLength={14} placeholder="10-digit mobile number" value={address.phone} onChange={(event) => updateAddress('phone', event.target.value)} /></label>
           <label className="field-span">Street address<input required autoComplete="street-address" value={address.line1} onChange={(event) => updateAddress('line1', event.target.value)} /></label>
-          <label>City<input required autoComplete="address-level2" value={address.city} onChange={(event) => updateAddress('city', event.target.value)} /></label>
+          <label>City<input required autoComplete="address-level2" value={address.city || location?.city || ''} onChange={(event) => updateAddress('city', event.target.value)} /></label>
           <label>PIN code<input required inputMode="numeric" autoComplete="postal-code" maxLength={6} pattern="\d{6}" value={address.postalCode} onChange={(event) => updateAddress('postalCode', event.target.value)} /></label>
         </div>
         {error && <p className="form-error" role="alert">{error}</p>}
