@@ -45,7 +45,7 @@ export default function Navbar() {
         </Link>
         <div className={`nav-links ${menuOpen ? 'nav-links-open' : ''}`}>
           {links.map((link) => link.href.startsWith('/#')
-            ? <a key={link.label} href={link.href} onClick={() => setMenuOpen(false)}>{link.label}</a>
+            ? <Link key={link.label} to={link.href} onClick={() => setMenuOpen(false)}>{link.label}</Link>
             : <NavLink key={link.label} to={link.href} onClick={() => setMenuOpen(false)}>{link.label}</NavLink>)}
           <button className="mobile-location" type="button" aria-expanded={locationOpen} aria-controls="location-popover" onClick={() => setLocationOpen(!locationOpen)}><MapPin size={15} /> {locationLabel} <ArrowDown size={13} /></button>
         </div>

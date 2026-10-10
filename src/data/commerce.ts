@@ -6,6 +6,7 @@ export interface CartLine {
 }
 
 export interface Address {
+  id?: string
   fullName: string
   phone: string
   line1: string
@@ -16,26 +17,27 @@ export interface Address {
 export interface Order {
   id: string
   items: CartLine[]
-  address: Address
+  address: Address | null
   total: number
   createdAt: string
-  status: 'Confirmed' | 'Preparing' | 'On the way' | 'Delivered'
+  status: string
 }
 
 export interface Booking {
   id: string
   serviceId: string
-  address: Address
+  address: Address | null
   date: string
   time: string
   createdAt: string
-  status: 'Confirmed' | 'Professional assigned' | 'Completed'
+  status: string
 }
 
 export interface Customer {
+  id: string
   name: string
   email: string
-  role?: 'customer' | 'partner'
+  role?: 'customer' | 'partner' | 'admin'
 }
 
 export interface CommerceState {

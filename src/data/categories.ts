@@ -4,6 +4,7 @@ export interface Category {
   description: string
   icon: string
   tone: string
+  imageUrl?: string | null
 }
 
 export const categories: Category[] = [

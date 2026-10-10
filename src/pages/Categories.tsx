@@ -3,16 +3,16 @@ import { useSearchParams } from 'react-router-dom'
 import { Search, SlidersHorizontal, Sparkles } from 'lucide-react'
 import CategoryCard from '../components/CategoryCard'
 import ServiceCard from '../components/ServiceCard'
-import { categories } from '../data/categories'
-import { services } from '../data/services'
+import { useCatalog } from '../context/useCatalog'
 
 export default function Categories() {
+  const { categories, services, loading, error } = useCatalog()
   const [searchParams, setSearchParams] = useSearchParams()
   const initialQuery = searchParams.get('q') ?? ''
   const [query, setQuery] = useState(initialQuery)
   const normalizedQuery = query.trim().toLowerCase()
-  const filteredCategories = useMemo(() => categories.filter((category) => `${category.name} ${category.description}`.toLowerCase().includes(normalizedQuery)), [normalizedQuery])
-  const filteredServices = useMemo(() => services.filter((service) => `${service.name} ${service.description}`.toLowerCase().includes(normalizedQuery)), [normalizedQuery])
+  const filteredCategories = useMemo(() => categories.filter((category) => `${category.name} ${category.description}`.toLowerCase().includes(normalizedQuery)), [categories, normalizedQuery])
+  const filteredServices = useMemo(() => services.filter((service) => `${service.name} ${service.description}`.toLowerCase().includes(normalizedQuery)), [services, normalizedQuery])
 
   function updateQuery(value: string) {
     setQuery(value)
@@ -30,7 +30,9 @@ export default function Categories() {
           <label className="listing-search"><Search size={19} /><span className="sr-only">Search services and categories</span><input value={query} onChange={(event) => updateQuery(event.target.value)} placeholder="Try “home cleaning” or “groceries”" /><span className="search-shortcut"><SlidersHorizontal size={15} /> Search</span></label>
         </div>
       </section>
-      {!normalizedQuery && <section className="container browse-categories"><div className="section-heading compact-heading"><div><span className="section-kicker">A GOOD PLACE TO START</span><h2>Explore all categories</h2></div><span className="result-count">{categories.length} categories</span></div><div className="category-grid">{categories.map((category) => <CategoryCard key={category.slug} category={category} />)}</div></section>}
+      {error && <section className="container"><p className="form-error" role="alert">{error}</p></section>}
+      {loading && <section className="container"><p role="status">Loading categories and services…</p></section>}
+      {!normalizedQuery && !loading && <section className="container browse-categories"><div className="section-heading compact-heading"><div><span className="section-kicker">A GOOD PLACE TO START</span><h2>Explore all categories</h2></div><span className="result-count">{categories.length} categories</span></div><div className="category-grid">{categories.map((category) => <CategoryCard key={category.slug} category={category} />)}</div></section>}
       {normalizedQuery && <section className="container results-section">
         <div className="section-heading compact-heading"><div><span className="section-kicker">SEARCH RESULTS</span><h2>Here’s what we found</h2></div><span className="result-count">{filteredCategories.length + filteredServices.length} results</span></div>
         {filteredCategories.length > 0 && <div className="category-grid search-category-grid">{filteredCategories.map((category) => <CategoryCard key={category.slug} category={category} />)}</div>}

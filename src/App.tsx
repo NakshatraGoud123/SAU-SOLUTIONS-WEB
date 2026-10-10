@@ -6,6 +6,7 @@ import { CommerceProvider } from './context/CommerceContext'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import { PreferencesProvider } from './context/PreferencesContext'
+import { CatalogProvider } from './context/CatalogProvider'
 
 const Home = lazy(() => import('./pages/Home'))
 const Categories = lazy(() => import('./pages/Categories'))
@@ -65,12 +66,14 @@ function RouteContent() {
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <PreferencesProvider>
         <CommerceProvider>
-          <Navbar />
-          <RouteContent />
-          <Footer />
+          <CatalogProvider>
+            <Navbar />
+            <RouteContent />
+            <Footer />
+          </CatalogProvider>
         </CommerceProvider>
       </PreferencesProvider>
     </BrowserRouter>

@@ -14,6 +14,8 @@ export interface Service {
   icon: string
   tone: string
   badge?: string
+  catalogKey?: string
+  imageUrl?: string | null
 }
 
 export const services: Service[] = [

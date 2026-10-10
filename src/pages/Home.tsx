@@ -3,9 +3,8 @@ import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import Hero from '../components/Hero'
 import CategoryCard from '../components/CategoryCard'
-import { categories } from '../data/categories'
-import { services } from '../data/services'
 import ServiceCard from '../components/ServiceCard'
+import { useCatalog } from '../context/useCatalog'
 
 const trustItems = [
   { title: 'Verified professionals', detail: 'People you can feel good about inviting in.', icon: ShieldCheck, tone: 'blue' },
@@ -21,6 +20,7 @@ const steps = [
 ]
 
 export default function Home() {
+  const { categories, services, loading, error } = useCatalog()
   return (
     <>
       <Hero />
@@ -37,16 +37,19 @@ export default function Home() {
             <div><span className="section-kicker">HERE FOR YOUR EVERYDAY</span><h2>One place for <span>all the things.</span></h2><p>Find the right help, essentials and little life upgrades — all close to home.</p></div>
             <Link to="/categories" className="text-link">Explore all categories <ArrowRight size={16} /></Link>
           </div>
-          <div className="category-grid">
+          {error && <p className="form-error" role="alert">{error}</p>}
+          {loading ? <p role="status">Loading categories…</p> : <div className="category-grid">
             {categories.map((category, index) => <motion.div key={category.slug} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.15 }} transition={{ duration: 0.3, delay: (index % 8) * 0.025 }}><CategoryCard category={category} /></motion.div>)}
-          </div>
+          </div>}
         </div>
       </section>
 
       <section className="section popular-section">
         <div className="container">
           <div className="section-heading"><div><span className="section-kicker">A FEW NEIGHBOURHOOD FAVOURITES</span><h2>Good things, <span>ready when you are.</span></h2><p>Everyday essentials and trusted professionals to make your next task easier.</p></div><Link to="/categories" className="text-link">See everything <ArrowRight size={16} /></Link></div>
-          <div className="service-grid">{services.slice(0, 6).map((service) => <ServiceCard key={service.id} service={service} />)}</div>
+          {loading ? <p role="status">Loading marketplace items…</p> : services.length > 0
+            ? <div className="service-grid">{services.slice(0, 6).map((service) => <ServiceCard key={service.id} service={service} />)}</div>
+            : !error && <p>No marketplace items are available yet.</p>}
         </div>
       </section>
 
