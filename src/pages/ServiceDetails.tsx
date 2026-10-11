@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ArrowLeft, Check, Clock3, MapPin, ShieldCheck, Star } from 'lucide-react'
+import { ArrowLeft, Check, Clock3, Info, MapPin, ShieldCheck, Sparkles } from 'lucide-react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import ServiceCard from '../components/ServiceCard'
 import { getCategory } from '../data/categories'
@@ -30,20 +30,20 @@ export default function ServiceDetails() {
         <div className="service-detail-main">
           <Link className="back-link" to={`/category/${service.categorySlug}`}><ArrowLeft size={15} /> {category?.name ?? 'Back to category'}</Link>
           <PhotoImage className="detail-art" photo={servicePhotos[service.id]} label={service.name} loading="eager" />
-          <span className="section-kicker">{service.kind === 'product' ? 'EVERYDAY ESSENTIAL' : 'A SAU VERIFIED PROFESSIONAL'}</span>
+          <span className="section-kicker">ILLUSTRATIVE DEMO LISTING</span>
           <h1>{service.name}</h1>
           <p className="detail-description">{service.description}</p>
-          <div className="detail-rating"><span><Star size={15} fill="currentColor" /> {service.rating}</span><span>{service.reviews} thoughtful reviews</span></div>
-          <div className="detail-benefits"><div><span><ShieldCheck size={18} /></span><div><strong>Carefully vetted</strong><small>Trusted by your neighbourhood</small></div></div><div><span><Clock3 size={18} /></span><div><strong>{service.eta}</strong><small>Choose a time that works for you</small></div></div><div><span><MapPin size={18} /></span><div><strong>Available nearby</strong><small>{location ? `Serving ${location.label}` : 'Choose your area to see nearby availability'}</small></div></div></div>
+          <div className="detail-rating"><span>Demo listing</span><span>Details, prices and availability are examples only.</span></div>
+          <div className="detail-benefits"><div><span><Sparkles size={18} /></span><div><strong>Illustrative example</strong><small>This is not a live service or product.</small></div></div><div><span><Clock3 size={18} /></span><div><strong>No live availability</strong><small>Provider schedules are not connected.</small></div></div><div><span><MapPin size={18} /></span><div><strong>Service area unconfirmed</strong><small>{location ? `Your selected location is ${location.label}; it does not confirm coverage.` : 'Location selection does not confirm coverage.'}</small></div></div></div>
         </div>
         <aside className="booking-card">
           <span className="booking-label">{service.kind === 'product' ? 'A GOOD THING TO HAVE' : 'YOUR NEXT GOOD EXPERIENCE'}</span>
           <h2>Thoughtfully taken care of.</h2>
-          <p>Clear details, reliable help, and a little more peace of mind — all in one place.</p>
-          <div className="booking-price"><strong>₹{service.price.toLocaleString('en-IN')}</strong><span>{service.priceUnit}</span></div>
-          {service.kind === 'product' ? <div className="purchase-actions"><button className="button button-primary booking-button" onClick={() => { addToCart(service.id); setAdded(true) }}>{added ? <><Check size={17} /> Added to your bag</> : <>Add to bag <ArrowLeft className="button-arrow-right" size={17} /></>}</button>{added && <Link className="text-link" to="/cart">Go to cart <ArrowLeft className="reverse-arrow" size={14} /></Link>}</div>
-            : <button className="button button-primary booking-button" onClick={() => navigate(`/booking?service=${encodeURIComponent(service.id)}`)}>Select date & book <ArrowLeft className="button-arrow-right" size={17} /></button>}
-          <div className="booking-assurance"><ShieldCheck size={16} /> No surprises. Just SAU.</div>
+          <p>This listing, its price and its details are illustrative. This preview does not process real orders, payments or bookings.</p>
+          <div className="booking-price"><strong>₹{service.price.toLocaleString('en-IN')}</strong><span>example price · {service.priceUnit}</span></div>
+          {service.kind === 'product' ? <div className="purchase-actions"><button className="button button-primary booking-button" onClick={() => { addToCart(service.id); setAdded(true) }}>{added ? <><Check size={17} /> Added to demo bag</> : <>Add demo item to bag <ArrowLeft className="button-arrow-right" size={17} /></>}</button>{added && <Link className="text-link" to="/cart">View demo bag <ArrowLeft className="reverse-arrow" size={14} /></Link>}</div>
+            : <button className="button button-primary booking-button" onClick={() => navigate(`/booking?service=${encodeURIComponent(service.id)}`)}>Preview demo booking <ArrowLeft className="button-arrow-right" size={17} /></button>}
+          <div className="booking-assurance"><Info size={16} /> No real request is sent to a provider.</div>
         </aside>
       </section>
       {related.length > 0 && <section className="container related-service-section"><div className="section-heading compact-heading"><div><span className="section-kicker">A FEW MORE GOOD OPTIONS</span><h2>More in {category?.name}</h2></div><Link to={`/category/${service.categorySlug}`} className="text-link">View all <ArrowLeft className="reverse-arrow" size={15} /></Link></div><div className="service-grid">{related.map((item) => <ServiceCard key={item.id} service={item} />)}</div></section>}

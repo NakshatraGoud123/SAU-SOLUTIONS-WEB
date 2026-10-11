@@ -2,7 +2,6 @@ import { lazy, Suspense } from 'react'
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import './App.css'
-import { CommerceProvider } from './context/CommerceContext'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import { PreferencesProvider } from './context/PreferencesContext'
@@ -10,14 +9,9 @@ import { PreferencesProvider } from './context/PreferencesContext'
 const Home = lazy(() => import('./pages/Home'))
 const Categories = lazy(() => import('./pages/Categories'))
 const CategoryServices = lazy(() => import('./pages/CategoryServices'))
-const ServiceDetails = lazy(() => import('./pages/ServiceDetails'))
-const Cart = lazy(() => import('./pages/Cart'))
-const Checkout = lazy(() => import('./pages/Checkout'))
-const Booking = lazy(() => import('./pages/Booking'))
-const Orders = lazy(() => import('./pages/Orders'))
-const Tracking = lazy(() => import('./pages/Tracking'))
-const Auth = lazy(() => import('./pages/Auth'))
-const Profile = lazy(() => import('./pages/Profile'))
+const About = lazy(() => import('./pages/About'))
+const ServiceArea = lazy(() => import('./pages/ServiceArea'))
+const AppComingSoon = lazy(() => import('./pages/AppComingSoon'))
 const PartnerRegistration = lazy(() => import('./pages/PartnerRegistration'))
 const Contact = lazy(() => import('./pages/Contact'))
 
@@ -44,19 +38,22 @@ function RouteContent() {
           <Route path="/categories" element={<Categories />} />
           <Route path="/category/:categoryId" element={<CategoryServices />} />
           <Route path="/categories/:categorySlug" element={<CategoryServices />} />
-          <Route path="/service/:serviceId" element={<ServiceDetails />} />
-          <Route path="/services/:serviceId" element={<ServiceDetails />} />
-          <Route path="/booking" element={<Booking />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/checkout" element={<Checkout />} />
-          <Route path="/orders" element={<Orders />} />
-          <Route path="/tracking" element={<Tracking />} />
-          <Route path="/login" element={<Auth mode="login" />} />
-          <Route path="/register" element={<Auth mode="register" />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/service-area" element={<ServiceArea />} />
+          <Route path="/app-coming-soon" element={<AppComingSoon />} />
+          <Route path="/service/:serviceId" element={<AppComingSoon />} />
+          <Route path="/services/:serviceId" element={<AppComingSoon />} />
+          <Route path="/booking" element={<AppComingSoon />} />
+          <Route path="/cart" element={<AppComingSoon />} />
+          <Route path="/checkout" element={<AppComingSoon />} />
+          <Route path="/orders" element={<AppComingSoon />} />
+          <Route path="/tracking" element={<AppComingSoon />} />
+          <Route path="/login" element={<AppComingSoon />} />
+          <Route path="/register" element={<AppComingSoon />} />
+          <Route path="/profile" element={<AppComingSoon />} />
           <Route path="/partner/register" element={<PartnerRegistration />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="*" element={<Categories />} />
+          <Route path="*" element={<AppComingSoon notFound />} />
         </Routes>
       </Suspense>
     </motion.main>
@@ -67,11 +64,9 @@ function App() {
   return (
     <BrowserRouter>
       <PreferencesProvider>
-        <CommerceProvider>
-          <Navbar />
-          <RouteContent />
-          <Footer />
-        </CommerceProvider>
+        <Navbar />
+        <RouteContent />
+        <Footer />
       </PreferencesProvider>
     </BrowserRouter>
   )

@@ -34,7 +34,7 @@ export default function Checkout() {
 
   return <div className="flow-page container">
     <Link className="back-link" to="/cart"><ArrowLeft size={15} /> Back to your bag</Link>
-    <div className="flow-heading"><span className="section-kicker">SECURE DEMO CHECKOUT</span><h1>Delivery details</h1><p>Tell us where to bring your essentials.</p></div>
+    <div className="flow-heading"><span className="section-kicker">DEMO CHECKOUT</span><h1>Example delivery details</h1><p>This preview does not place a real order or arrange delivery.</p></div>
     <div className="cart-layout checkout-layout">
       <form className="flow-form" onSubmit={submit}>
         <h2>Delivery address</h2>

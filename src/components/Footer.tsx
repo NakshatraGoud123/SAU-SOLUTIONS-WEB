@@ -1,11 +1,9 @@
-import { ArrowRight, AtSign, BriefcaseBusiness, MoveUpRight } from 'lucide-react'
+import { ArrowRight, MoveUpRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
-const SUPPORT_EMAIL = 'Sausolution.support@gmail.com'
 const footerGroups = [
-  { title: 'Explore', links: [['Platform', '/'], ['Categories', '/categories'], ['How it works', '/#how-it-works'], ['Become a partner', '/partner/register'], ['Download app', '/#download']] },
-  { title: 'Company', links: [['About SAU', '/#about'], ['Careers', `mailto:${SUPPORT_EMAIL}?subject=Careers`], ['Contact', '/contact'], ['Customer support', `mailto:${SUPPORT_EMAIL}`], ['Partner support', `mailto:${SUPPORT_EMAIL}`]] },
-  { title: 'The details', links: [['Privacy policy', `mailto:${SUPPORT_EMAIL}?subject=Privacy%20policy`], ['Terms of service', `mailto:${SUPPORT_EMAIL}?subject=Terms%20of%20service`], ['Refund policy', `mailto:${SUPPORT_EMAIL}?subject=Refund%20policy`]] },
+  { title: 'Explore', links: [['Home', '/'], ['Category previews', '/categories'], ['SAU SERVICES app', '/app-coming-soon']] },
+  { title: 'Company', links: [['About Us', '/about'], ['Service area', '/service-area'], ['Partner interest', '/partner/register'], ['Contact', '/contact']] },
 ]
 const currentYear = new Date().getFullYear()
 
@@ -16,16 +14,15 @@ export default function Footer() {
         <div className="footer-brand-column">
           <Link className="wordmark footer-wordmark" to="/">
             <span className="brand-mark"><span /><span /><span /></span>
-            <span className="brand-name">SAU<span>SOLUTIONS</span><small>ALL SERVICES IN ONE APP</small></span>
+            <span className="brand-name">SAU<span>SOLUTIONS</span><small>LOCAL SERVICES · COMING SOON</small></span>
           </Link>
-          <p>More time for what matters.<br />A little less to figure out.</p>
-          <a className="footer-contact" href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL} <MoveUpRight size={14} /></a>
-          <div className="social-links"><a href="https://www.instagram.com/" aria-label="Instagram"><AtSign size={17} /></a><a href="https://www.linkedin.com/" aria-label="LinkedIn"><BriefcaseBusiness size={16} /></a></div>
+          <p>Preparing a local services<br />ecosystem for the future.</p>
+          <Link className="footer-contact" to="/contact">Contact SAU Solutions <MoveUpRight size={14} /></Link>
         </div>
-        {footerGroups.map((group) => <div className="footer-link-group" key={group.title}><h3>{group.title}</h3>{group.links.map(([label, href]) => href.startsWith('mailto:') ? <a key={label} href={href}>{label}</a> : <Link key={label} to={href}>{label}</Link>)}</div>)}
-        <div className="footer-note"><span className="footer-note-icon"><ArrowRight size={19} /></span><strong>Everyday life,<br />a little more effortless.</strong><span>Discover something helpful</span><Link to="/categories">Explore SAU <ArrowRight size={15} /></Link></div>
+        {footerGroups.map((group) => <div className="footer-link-group" key={group.title}><h3>{group.title}</h3>{group.links.map(([label, href]) => <Link key={label} to={href}>{label}</Link>)}</div>)}
+        <div className="footer-note"><span className="footer-note-icon"><ArrowRight size={19} /></span><strong>SAU SERVICES<br />coming soon.</strong><span>The customer app has not launched on Google Play yet. No transactions are available on this website.</span><Link to="/app-coming-soon">Pre-launch information <ArrowRight size={15} /></Link></div>
       </div>
-      <div className="container footer-bottom"><span>© {currentYear} SAU Solutions. Made for everyday life.</span><span>Thoughtfully bringing it all together <span className="footer-heart">✳</span></span></div>
+      <div className="container footer-bottom"><span>© {currentYear} SAU Solutions.</span><span>Building for local connections <span className="footer-heart">✳</span></span></div>
     </footer>
   )
 }

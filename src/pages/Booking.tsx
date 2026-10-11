@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react'
-import { ArrowLeft, ArrowRight, CalendarDays, CheckCircle2, ShieldCheck } from 'lucide-react'
+import { ArrowLeft, ArrowRight, CalendarDays, Info } from 'lucide-react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { useCommerce } from '../context/useCommerce'
 import { type Address } from '../data/commerce'
@@ -41,13 +41,13 @@ export default function Booking() {
 
   return <div className="flow-page container">
     <Link className="back-link" to={`/service/${service.id}`}><ArrowLeft size={15} /> Back to service</Link>
-    <div className="flow-heading"><span className="section-kicker">YOUR NEXT GOOD EXPERIENCE</span><h1>Book a service</h1><p>Choose a time and tell us where the professional can find you.</p></div>
+    <div className="flow-heading"><span className="section-kicker">DEMO BOOKING PREVIEW</span><h1>Preview a booking</h1><p>This sample flow does not contact a provider or create a real booking.</p></div>
     <div className="cart-layout checkout-layout">
       <form className="flow-form" onSubmit={submit}>
         <div className="booking-service-preview"><span className={`cart-product-art art-${service.tone}`}><IconGlyph name={service.icon} size={25} /></span><span><small>BOOKING</small><strong>{service.name}</strong></span><strong>₹{service.price.toLocaleString('en-IN')}</strong></div>
-        <h2>Choose a date & time</h2>
+        <h2>Choose an example date & time</h2>
         <label className="date-field">Preferred date<input required type="date" min={minBookingDate} value={date} onChange={(event) => setDate(event.target.value)} /></label>
-        <fieldset className="time-slots"><legend>Available time slots</legend>{timeSlots.map((slot) => <label key={slot} className={time === slot ? 'time-slot selected' : 'time-slot'}><input type="radio" name="slot" required checked={time === slot} onChange={() => setTime(slot)} />{slot}</label>)}</fieldset>
+        <fieldset className="time-slots"><legend>Example time slot (not live availability)</legend>{timeSlots.map((slot) => <label key={slot} className={time === slot ? 'time-slot selected' : 'time-slot'}><input type="radio" name="slot" required checked={time === slot} onChange={() => setTime(slot)} />{slot}</label>)}</fieldset>
         <h2>Your address</h2>
         <div className="form-grid">
           <label>Full name<input required autoComplete="name" value={address.fullName} onChange={(event) => updateAddress('fullName', event.target.value)} /></label>
@@ -57,10 +57,10 @@ export default function Booking() {
           <label>PIN code<input required inputMode="numeric" autoComplete="postal-code" maxLength={6} pattern="\d{6}" value={address.postalCode} onChange={(event) => updateAddress('postalCode', event.target.value)} /></label>
         </div>
         {error && <p className="form-error" role="alert">{error}</p>}
-        <div className="payment-note"><ShieldCheck size={18} /><span><strong>Trusted, local professionals.</strong><small>This booking request is saved in your browser for this demo.</small></span></div>
-        <button className="button button-primary" type="submit">Confirm booking <ArrowRight size={16} /></button>
+        <div className="payment-note"><Info size={18} /><span><strong>Demo only: no booking request is sent.</strong><small>Details are saved only in this browser for this preview.</small></span></div>
+        <button className="button button-primary" type="submit">Save demo booking <ArrowRight size={16} /></button>
       </form>
-      <aside className="flow-summary"><span className="section-kicker">BOOKING SUMMARY</span><h2>At a glance.</h2><div className="summary-row"><span>Service</span><strong>{service.name}</strong></div><div className="summary-row"><span>Duration</span><strong>{service.eta}</strong></div><div className="summary-total"><span>Starting at</span><strong>₹{service.price.toLocaleString('en-IN')}</strong></div><p className="summary-note"><CheckCircle2 size={14} /> Final pricing is confirmed before work begins.</p></aside>
+      <aside className="flow-summary"><span className="section-kicker">DEMO SUMMARY</span><h2>Example details.</h2><div className="summary-row"><span>Service</span><strong>{service.name}</strong></div><div className="summary-row"><span>Availability</span><strong>Not connected</strong></div><div className="summary-total"><span>Example price</span><strong>₹{service.price.toLocaleString('en-IN')}</strong></div><p className="summary-note">No payment is collected, and no provider is contacted.</p></aside>
     </div>
   </div>
 }
