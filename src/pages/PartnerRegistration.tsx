@@ -1,17 +1,17 @@
-import { ArrowRight, Bike, BriefcaseBusiness, MessageCircle, Store, Wrench } from 'lucide-react'
+import { ArrowRight, Bike, BriefcaseBusiness, Mail, Store, Wrench } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
-const partnerWhatsAppNumber = import.meta.env.VITE_SAU_PARTNER_WHATSAPP_NUMBER?.trim() ?? ''
-const hasValidWhatsAppNumber = /^\d{8,15}$/.test(partnerWhatsAppNumber)
-const partnerWhatsAppMessage = [
-  'Hi SAU SOLUTIONS, I’m interested in joining SAU SERVICES.',
+const SUPPORT_EMAIL = 'Sausolution.support@gmail.com'
+const partnerEmailSubject = encodeURIComponent('SAU SERVICES partner interest')
+const partnerEmailBody = encodeURIComponent([
+  'Hello SAU SOLUTIONS,',
+  '',
+  'I am interested in learning about the SAU SERVICES pre-launch partner process.',
   'Partner type: [local vendor/shop owner / mechanic / service provider / delivery partner]',
   'Locality: [your area/locality]',
-  'Please share information about the pre-launch partner process.',
-].join('\n')
-const partnerWhatsAppUrl = hasValidWhatsAppNumber
-  ? `https://wa.me/${partnerWhatsAppNumber}?text=${encodeURIComponent(partnerWhatsAppMessage)}`
-  : undefined
+  '',
+  'Please share information when available.',
+].join('\n'))
 
 export default function PartnerRegistration() {
   return (
@@ -29,17 +29,8 @@ export default function PartnerRegistration() {
       </section>
       <section className="information-callout partner-interest-notice">
         <strong>Interested in joining SAU SERVICES?</strong>
-        {partnerWhatsAppUrl
-          ? <a className="button button-primary partner-whatsapp-button" href={partnerWhatsAppUrl} target="_blank" rel="noopener noreferrer" aria-describedby="partner-whatsapp-privacy"><MessageCircle size={18} /> Express Interest on WhatsApp <ArrowRight size={16} /></a>
-          : <button className="button button-primary partner-whatsapp-button" type="button" disabled aria-describedby="partner-whatsapp-status partner-whatsapp-privacy"><MessageCircle size={18} /> Express Interest on WhatsApp</button>}
-        <p id="partner-whatsapp-status" className={hasValidWhatsAppNumber ? 'partner-whatsapp-status partner-whatsapp-status-ready' : 'partner-whatsapp-status'} aria-live="polite">
-          {hasValidWhatsAppNumber ? 'WhatsApp will open with a message draft.' : 'Partner enquiries via WhatsApp will be available soon.'}
-        </p>
-        <p id="partner-whatsapp-privacy" className="partner-whatsapp-privacy">
-          {hasValidWhatsAppNumber
-            ? 'The button opens WhatsApp in a new tab with a draft asking for your partner type and locality. The message is sent only if you send it in WhatsApp. This website does not collect or store your information.'
-            : 'No visitor information is collected or stored on this website. When available, the button will open WhatsApp; the message will be sent only if you send it there.'}
-        </p>
+        <a className="button button-primary partner-email-button" href={`mailto:${SUPPORT_EMAIL}?subject=${partnerEmailSubject}&body=${partnerEmailBody}`}><Mail size={18} /> Ask about partner opportunities <ArrowRight size={16} /></a>
+        <p className="partner-contact-note">This opens your email app with a draft. The email is sent only if you choose to send it. Your message is handled by your email provider and SAU SOLUTIONS if delivered.</p>
       </section>
       <div className="prelaunch-actions"><Link className="button button-primary" to="/about">About SAU Solutions <ArrowRight size={16} /></Link><Link className="text-link" to="/contact">General contact information</Link></div>
     </div>
