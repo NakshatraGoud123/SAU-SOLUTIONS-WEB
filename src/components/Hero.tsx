@@ -9,7 +9,7 @@ export default function Hero() {
         <motion.div className="hero-copy" initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55 }}>
           <div className="eyebrow"><span className="eyebrow-dot" /> A local services vision, by SAU SOLUTIONS</div>
           <h1>Local life,<br />a little more <span>connected.</span></h1>
-          <p className="hero-subtitle">SAU SERVICES is being prepared as a customer app for discovering local vendors, everyday essentials and services. The app has not launched on Google Play yet.</p>
+          <p className="hero-subtitle">SAU SERVICES is being prepared as a customer app for discovering local vendors, everyday essentials and services. The app has not launched on Google Play yet. 16 October 2026 is a target date only, not a confirmed release date.</p>
           <div className="hero-actions">
             <Link className="button button-primary" to="/app-coming-soon">SAU SERVICES — Coming Soon <ArrowRight size={16} /></Link>
             <Link className="text-link" to="/categories">Explore categories <ArrowRight size={16} /></Link>

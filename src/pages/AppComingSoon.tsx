@@ -11,7 +11,7 @@ export default function AppComingSoon({ notFound = false }: { notFound?: boolean
         <p>{notFound
           ? 'That address does not match a page on the SAU Solutions website.'
           : 'The SAU SERVICES Customer App has not launched on Google Play yet. The website does not process shopping, bookings, payments, orders, tracking or customer accounts.'}</p>
-        {!notFound && <p className="prelaunch-note"><CalendarClock size={16} /> No launch date or download link is available yet. We’ll share confirmed details when they are ready.</p>}
+        {!notFound && <p className="prelaunch-note"><CalendarClock size={16} /> 16 October 2026 is a target date only, not a confirmed release date. No download link is available yet; we’ll share updates when details are confirmed.</p>}
         <div className="prelaunch-actions">
           <Link className="button button-primary" to="/categories">Explore category previews <ArrowRight size={16} /></Link>
           <Link className="text-link" to="/contact">Contact SAU Solutions</Link>
