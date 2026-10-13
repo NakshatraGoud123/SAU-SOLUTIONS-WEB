@@ -1,4 +1,3 @@
-
 name: Deploy SAU Solutions Website
 
 on:
@@ -34,6 +33,13 @@ jobs:
 
       - name: Build website
         run: npm run build
+
+      - name: Prepare direct routes for GitHub Pages
+        run: |
+          for route in categories about service-area app-coming-soon contact partner/register; do
+            mkdir -p "dist/$route"
+            cp dist/index.html "dist/$route/index.html"
+          done
 
       - name: Upload website
         uses: actions/upload-pages-artifact@v3
