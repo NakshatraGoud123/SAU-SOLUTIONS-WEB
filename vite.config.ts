@@ -1,9 +1,9 @@
+
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 
-// https://vite.dev/config/
-export default defineConfig({
-  // GitHub Pages serves this repository from a subpath, not the domain root.
- base: '/',
+export default defineConfig(({ command }) => ({
+  // Production uses the custom-domain root; development uses the repository prefix.
+  base: command === 'build' ? '/' : '/SAU-SOLUTIONS-WEB/',
   plugins: [react()],
-})
+}))
