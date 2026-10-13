@@ -6,11 +6,12 @@ const LOCATION_KEY = 'sau-location-v1'
 
 function readTheme(): ThemeMode {
   try {
-    return localStorage.getItem(THEME_KEY) === 'dark' ? 'dark' : 'light'
+    const saved = localStorage.getItem(THEME_KEY)
+    if (saved === 'dark' || saved === 'light') return saved
   } catch (error) {
     console.error('Could not read the saved SAU theme preference.', error)
-    return 'light'
   }
+  return window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
 }
 
 function readLocation(): SelectedLocation | null {

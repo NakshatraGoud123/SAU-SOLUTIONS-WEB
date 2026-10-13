@@ -12,6 +12,7 @@ type PageMetadata = {
   title: string
   description: string
   canonicalPath?: string
+  socialTitle?: string
   socialDescription?: string
 }
 
@@ -65,7 +66,7 @@ function updateMetaContent(attribute: 'name' | 'property', key: string, content:
 function updatePageMetadata(metadata: PageMetadata) {
   document.title = metadata.title
   updateMetaContent('name', 'description', metadata.description)
-  updateMetaContent('property', 'og:title', metadata.title)
+  updateMetaContent('property', 'og:title', metadata.socialTitle ?? metadata.title)
   updateMetaContent('property', 'og:description', metadata.socialDescription ?? metadata.description)
 
   let canonical = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]')
@@ -151,10 +152,11 @@ function App() {
   return (
     <BrowserRouter basename={import.meta.env.BASE_URL}>
       <PreferencesProvider>
-        <Navbar />
-        <RouteContent />
-        <Footer />
-        <WhatsAppButton />
+        <div className="app-shell flex min-h-screen">
+          <Navbar />
+          <div className="app-content"><RouteContent /><Footer /></div>
+          <WhatsAppButton />
+        </div>
       </PreferencesProvider>
     </BrowserRouter>
   )

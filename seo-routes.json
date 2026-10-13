@@ -2,10 +2,11 @@
   "siteUrl": "https://sausolution.com/",
   "routes": {
     "/": {
-      "title": "SAU SOLUTIONS — SAU SERVICES Coming Soon",
-      "description": "Learn about SAU SOLUTIONS and the SAU SERVICES customer app, currently in pre-launch. Explore local category previews and partner information.",
+      "title": "SAU SOLUTIONS | Local Services & Vendors in Hyderabad",
+      "description": "Discover SAU SOLUTIONS and SAU SERVICES in Hyderabad. Connect with local vendors, shops, service professionals, mechanics, and delivery partners.",
       "canonicalPath": "/",
-      "socialDescription": "Explore the SAU SERVICES vision, local category previews, and partner information before launch."
+      "socialTitle": "SAU SOLUTIONS | Local Services, Vendors & Delivery",
+      "socialDescription": "Explore SAU SERVICES and connect with local vendors, shops, mechanics, service professionals, and delivery partners in Hyderabad."
     },
     "/categories": {
       "title": "Local Service Categories | SAU SOLUTIONS",

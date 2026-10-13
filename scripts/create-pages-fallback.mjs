@@ -33,7 +33,7 @@ function withMetadata(html, metadata) {
   const canonicalUrl = new URL(metadata.canonicalPath.replace(/^\//, ''), seoConfig.siteUrl).href
   let result = html.replace(/<title>[\s\S]*?<\/title>/i, `<title>${escapeHtml(metadata.title)}</title>`)
   result = setMeta(result, 'name', 'description', metadata.description)
-  result = setMeta(result, 'property', 'og:title', metadata.title)
+  result = setMeta(result, 'property', 'og:title', metadata.socialTitle ?? metadata.title)
   result = setMeta(result, 'property', 'og:description', metadata.socialDescription ?? metadata.description)
   result = setMeta(result, 'property', 'og:url', canonicalUrl)
   return setCanonical(result, canonicalUrl)

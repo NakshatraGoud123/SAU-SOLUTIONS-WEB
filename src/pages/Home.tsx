@@ -1,5 +1,5 @@
 import { ArrowRight, BriefcaseBusiness, MapPin, ShoppingBasket, Smartphone, Wrench } from 'lucide-react'
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import Hero from '../components/Hero'
 import CategoryCard from '../components/CategoryCard'
@@ -12,6 +12,7 @@ const ecosystem = [
 ]
 
 export default function Home() {
+  const reduceMotion = useReducedMotion()
   return (
     <>
       <Hero />
@@ -27,7 +28,7 @@ export default function Home() {
             <Link to="/categories" className="text-link">Explore categories <ArrowRight size={16} /></Link>
           </div>
           <div className="category-grid">
-            {categories.slice(0, 8).map((category, index) => <motion.div key={category.slug} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.15 }} transition={{ duration: 0.3, delay: (index % 8) * 0.025 }}><CategoryCard category={category} /></motion.div>)}
+            {categories.slice(0, 8).map((category, index) => <motion.div key={category.slug} initial={reduceMotion ? false : { opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.15 }} transition={{ duration: reduceMotion ? 0 : 0.3, delay: reduceMotion ? 0 : (index % 8) * 0.025 }}><CategoryCard category={category} /></motion.div>)}
           </div>
         </div>
       </section>
