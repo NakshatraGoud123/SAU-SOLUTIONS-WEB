@@ -934,7 +934,7 @@
 .partner-contact-note { max-width: 700px; margin: 7px 0 0; color: var(--muted); font-size: 12px; line-height: 1.7; }
 :root[data-theme='dark'] .partner-contact-note { color: #a5b5cf; }
 
-@media (max-width: 834px) {
+@media (max-width: 1140px) {
   .navbar { position: relative; gap: 10px; }
   .nav-links { position: absolute; z-index: 20; top: 100%; left: 0; right: 0; display: none; flex-direction: column; align-items: stretch; gap: 0; padding: 8px 19px 15px; border: 1px solid #e8edf4; border-top: 0; border-radius: 0 0 12px 12px; background: #fff; box-shadow: 0 16px 24px rgba(26,43,76,.08); }
   .nav-links-open { display: flex; }
@@ -963,3 +963,41 @@
 :root[data-theme='dark'] .menu-toggle { background: #14233a; border-color: #30425d; color: #dbe6fa; }
 :root[data-theme='dark'] .nav-links { background: #101d31; border-color: #293a54; }
 :root[data-theme='dark'] .nav-links a { border-color: #263750; }
+
+.about-values-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.about-step-label { display: block; margin-top: 13px; color: var(--blue); font-size: 9px; font-weight: 700; letter-spacing: 1px; }
+.about-step-label + h3 { margin-top: 6px; }
+.about-process-section { padding-top: 42px; }
+.about-prelaunch-callout { margin-top: 42px; }
+.career-employment-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.career-partner-section { padding-top: 44px; }
+.career-contact-callout { margin-top: 42px; }
+.career-contact-callout > p { margin-bottom: 18px; }
+.career-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 14px; margin-top: 18px; }
+.offerings-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.offering-card h2 { margin: 16px 0 8px; color: var(--navy); font: 700 16px/1.4 var(--heading); }
+.offering-card p { color: var(--muted); font-size: 12px; line-height: 1.7; }
+.offerings-note { margin-top: 34px; }
+.products-disclaimer { margin-bottom: 38px; }
+.products-category-section { margin-top: 24px; }
+.products-category-grid { margin-top: 22px; }
+.products-enquiry { margin-top: 42px; }
+.button-whatsapp { background: #168c61; color: #fff; box-shadow: 0 8px 18px rgba(22,140,97,.18); }
+.button-whatsapp:hover { background: #11764f; }
+.contact-whatsapp { margin: 11px 0 0 7px; }
+.whatsapp-float { position: fixed; z-index: 30; right: 22px; bottom: 22px; display: inline-flex; align-items: center; gap: 9px; min-height: 52px; padding: 0 18px; border: 1px solid rgba(255,255,255,.28); border-radius: 999px; background: #168c61; color: #fff; box-shadow: 0 12px 28px rgba(15,104,70,.28); font-size: 13px; font-weight: 700; transition: transform .2s, background .2s; }
+.whatsapp-float:hover { transform: translateY(-3px); background: #11764f; }
+
+:root[data-theme='dark'] .offering-card h2 { color: #e7efff; }
+
+@media (max-width: 760px) {
+  .about-values-grid, .offerings-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .contact-whatsapp { margin-left: 0; }
+  .whatsapp-float { right: 14px; bottom: 14px; min-height: 48px; padding-inline: 15px; }
+}
+
+@media (max-width: 520px) {
+  .about-values-grid, .career-employment-grid, .offerings-grid { grid-template-columns: 1fr; }
+  .career-actions { align-items: flex-start; flex-direction: column; }
+  .contact-support-card .button { width: 100%; }
+}

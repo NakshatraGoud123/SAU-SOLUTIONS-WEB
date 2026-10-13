@@ -1,0 +1,56 @@
+{
+  "siteUrl": "https://sausolution.com/",
+  "routes": {
+    "/": {
+      "title": "SAU SOLUTIONS — SAU SERVICES Coming Soon",
+      "description": "Learn about SAU SOLUTIONS and the SAU SERVICES customer app, currently in pre-launch. Explore local category previews and partner information.",
+      "canonicalPath": "/",
+      "socialDescription": "Explore the SAU SERVICES vision, local category previews, and partner information before launch."
+    },
+    "/categories": {
+      "title": "Local Service Categories | SAU SOLUTIONS",
+      "description": "Browse SAU SERVICES previews for local vendors and services. These categories are informational and do not confirm live providers or availability.",
+      "canonicalPath": "/categories/"
+    },
+    "/about": {
+      "title": "About SAU SOLUTIONS | SAU SERVICES",
+      "description": "Learn about SAU SOLUTIONS and the pre-launch SAU SERVICES customer app vision for local vendors, everyday needs, and service providers.",
+      "canonicalPath": "/about/"
+    },
+    "/careers": {
+      "title": "Careers and Partner Opportunities | SAU SOLUTIONS",
+      "description": "Explore future employment and internship enquiries at SAU SOLUTIONS, or learn about independent vendor, service professional, mechanic and delivery partner interest.",
+      "canonicalPath": "/careers/"
+    },
+    "/what-we-offer": {
+      "title": "Local Products and Services | SAU SOLUTIONS",
+      "description": "Explore planned SAU SERVICES categories for local shops, groceries, fresh food, healthcare products, restaurants, mechanics, home services and delivery partners.",
+      "canonicalPath": "/what-we-offer/"
+    },
+    "/products": {
+      "title": "Local Product Categories | SAU SOLUTIONS",
+      "description": "Browse an overview of planned product categories from participating local vendors. Live listings, prices, stock status and checkout are not available.",
+      "canonicalPath": "/products/"
+    },
+    "/service-area": {
+      "title": "SAU SERVICES Service Area | SAU SOLUTIONS",
+      "description": "Read about Himayatnagar, Hyderabad, as a possible initial pilot area for SAU SERVICES. Coverage is not yet confirmed and services are not currently operating.",
+      "canonicalPath": "/service-area/"
+    },
+    "/contact": {
+      "title": "Contact SAU SOLUTIONS | SAU SERVICES",
+      "description": "Find the SAU SOLUTIONS contact email for general questions about the SAU SERVICES customer app pre-launch.",
+      "canonicalPath": "/contact/"
+    },
+    "/partner/register": {
+      "title": "SAU SERVICES Partner Information | SAU SOLUTIONS",
+      "description": "Learn about partner-interest opportunities for local vendors, mechanics, service providers, and delivery partners in the planned SAU SERVICES ecosystem.",
+      "canonicalPath": "/partner/register/"
+    },
+    "/app-coming-soon": {
+      "title": "SAU SERVICES App Coming Soon | SAU SOLUTIONS",
+      "description": "The SAU SERVICES Customer App has not launched on Google Play yet. Learn about its pre-launch status; this website does not process orders, bookings, or payments.",
+      "canonicalPath": "/app-coming-soon/"
+    }
+  }
+}

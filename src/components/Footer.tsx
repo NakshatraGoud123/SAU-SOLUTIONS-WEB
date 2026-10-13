@@ -2,8 +2,8 @@ import { ArrowRight, MoveUpRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 const footerGroups = [
-  { title: 'Explore', links: [['Home', '/'], ['Category previews', '/categories'], ['SAU SERVICES app', '/app-coming-soon']] },
-  { title: 'Company', links: [['About Us', '/about'], ['Service area', '/service-area'], ['Partner interest', '/partner/register'], ['Contact', '/contact']] },
+  { title: 'Explore', links: [['Home', '/'], ['Category previews', '/categories'], ['What We Offer', '/what-we-offer'], ['Our Products', '/products'], ['SAU SERVICES app', '/app-coming-soon']] },
+  { title: 'Company', links: [['About Us', '/about'], ['Careers', '/careers'], ['Service area', '/service-area'], ['Partner interest', '/partner/register'], ['Contact', '/contact']] },
 ]
 const currentYear = new Date().getFullYear()
 

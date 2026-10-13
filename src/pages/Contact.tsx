@@ -1,7 +1,8 @@
-import { ArrowRight, Mail } from 'lucide-react'
+import { ArrowRight, Mail, MessageCircle } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 const SUPPORT_EMAIL = 'Sausolution.support@gmail.com'
+const WHATSAPP_URL = 'https://wa.me/919963182721?text=Hello%20SAU%20SOLUTIONS%2C%20I%20would%20like%20to%20know%20more%20about%20your%20services.'
 
 export default function Contact() {
   return <section className="contact-page container">
@@ -16,6 +17,7 @@ export default function Contact() {
       <h2>Contact by email.</h2>
       <p>Selecting the address opens your email app. Your message is sent only if you choose to send it; this website does not submit or track enquiries.</p>
       <a className="button button-primary" href={`mailto:${SUPPORT_EMAIL}`}><Mail size={17} /> {SUPPORT_EMAIL} <ArrowRight size={15} /></a>
+      <a className="button button-whatsapp contact-whatsapp" href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer"><MessageCircle size={17} /> Chat with us on WhatsApp <ArrowRight size={15} /></a>
     </div>
     <div className="contact-shortcuts">
       <Link to="/app-coming-soon"><strong>SAU SERVICES Customer App</strong><span>View pre-launch information <ArrowRight size={15} /></span></Link>
