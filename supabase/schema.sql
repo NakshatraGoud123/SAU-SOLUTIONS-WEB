@@ -121,7 +121,7 @@ create table if not exists public.bookings (
   booking_time text not null,
   status text not null default 'PENDING' check (status in (
     'PENDING', 'ACCEPTED', 'ON_THE_WAY', 'ARRIVED', 'SERVICE_STARTED',
-    'COMPLETED', 'REJECTED', 'CANCELLED'
+    'COMPLETED', 'REJECTED', 'CANCELLED', 'CONFIRMED', 'IN_PROGRESS'
   )),
   total_amount numeric(10, 2) check (total_amount >= 0),
   notes text,
@@ -139,9 +139,98 @@ create table if not exists public.orders (
   )),
   total_amount numeric(10, 2) not null default 0 check (total_amount >= 0),
   payment_status text not null default 'PENDING' check (payment_status in ('PENDING', 'PAID', 'FAILED', 'REFUNDED')),
+  checkout_attempt_id uuid,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+
+alter table public.orders add column if not exists checkout_attempt_id uuid;
+do $$
+declare
+  duplicate_attempt_groups bigint;
+  named_index regclass;
+begin
+  if not exists (
+    select 1 from pg_attribute
+    where attrelid = 'public.orders'::regclass
+      and attname = 'checkout_attempt_id'
+      and atttypid = 'uuid'::regtype
+      and not attisdropped
+  ) then
+    raise exception 'public.orders.checkout_attempt_id must be uuid.';
+  end if;
+
+  select count(*) into duplicate_attempt_groups
+  from (
+    select checkout_attempt_id
+    from public.orders
+    where checkout_attempt_id is not null
+    group by checkout_attempt_id
+    having count(*) > 1
+  ) duplicate_attempts;
+  if duplicate_attempt_groups > 0 then
+    raise exception 'Duplicate non-null checkout attempt IDs exist on public.orders.';
+  end if;
+
+  named_index := to_regclass('public.orders_checkout_attempt_id_uidx');
+  if named_index is not null and not exists (
+    select 1
+    from pg_index i
+    join pg_class index_table on index_table.oid = i.indexrelid
+    join pg_am access_method on access_method.oid = index_table.relam
+    where i.indexrelid = named_index
+      and i.indrelid = 'public.orders'::regclass
+      and i.indisunique
+      and i.indisvalid
+      and i.indisready
+      and i.indnkeyatts = 1
+      and i.indnatts = 1
+      and i.indpred is null
+      and i.indexprs is null
+      and access_method.amname = 'btree'
+      and i.indclass[0] = (
+        select opc.oid
+        from pg_opclass opc
+        where opc.opcmethod = access_method.oid
+          and opc.opcintype = 'uuid'::regtype
+          and opc.opcdefault
+      )
+      and i.indcollation[0] = 0
+      and i.indoption[0] = 0
+      and pg_get_indexdef(i.indexrelid, 1, true) = 'checkout_attempt_id'
+  ) then
+    raise exception 'Index public.orders_checkout_attempt_id_uidx has an unexpected definition.';
+  end if;
+
+  if named_index is null and not exists (
+    select 1
+    from pg_index i
+    join pg_class index_table on index_table.oid = i.indexrelid
+    join pg_am access_method on access_method.oid = index_table.relam
+    where i.indrelid = 'public.orders'::regclass
+      and i.indisunique
+      and i.indisvalid
+      and i.indisready
+      and i.indnkeyatts = 1
+      and i.indnatts = 1
+      and i.indpred is null
+      and i.indexprs is null
+      and access_method.amname = 'btree'
+      and i.indclass[0] = (
+        select opc.oid
+        from pg_opclass opc
+        where opc.opcmethod = access_method.oid
+          and opc.opcintype = 'uuid'::regtype
+          and opc.opcdefault
+      )
+      and i.indcollation[0] = 0
+      and i.indoption[0] = 0
+      and pg_get_indexdef(i.indexrelid, 1, true) = 'checkout_attempt_id'
+  ) then
+    execute 'create unique index orders_checkout_attempt_id_uidx on public.orders using btree (checkout_attempt_id)';
+  end if;
+end
+$$;
 
 create table if not exists public.order_items (
   id uuid primary key default gen_random_uuid(),
@@ -187,18 +276,145 @@ alter table public.partner_profiles add column if not exists postal_code text;
 
 -- Preserve existing singular-cart data while the application moves to carts.
 do $$
+declare
+  expected_column_count integer;
+  invalid_legacy_cart boolean;
+  invalid_target_carts boolean;
+  duplicate_owner boolean;
+  conflicting_owner boolean;
+  orphan_item boolean;
+  legacy_fk record;
 begin
   if to_regclass('public.cart') is not null then
+    select count(*) into expected_column_count
+    from information_schema.columns
+    where table_schema = 'public' and table_name = 'cart'
+      and column_name in ('id', 'user_id', 'created_at', 'updated_at');
+    if expected_column_count <> 4 then
+      raise exception 'Legacy public.cart has an unexpected shape. Inspect its columns before migrating.';
+    end if;
+
+    execute 'select exists (select 1 from public.cart where id is null or user_id is null)'
+      into invalid_legacy_cart;
+    if invalid_legacy_cart then
+      raise exception 'Legacy public.cart contains rows without an ID or owner. Resolve them explicitly before migration.';
+    end if;
+
+    execute 'select exists (select 1 from public.cart group by id having count(*) > 1)'
+      into invalid_legacy_cart;
+    if invalid_legacy_cart then
+      raise exception 'Legacy public.cart contains duplicate IDs. Resolve them explicitly before migration.';
+    end if;
+
+    execute 'select exists (select 1 from public.cart group by user_id having count(*) > 1)'
+      into duplicate_owner;
+    if duplicate_owner then
+      raise exception 'Legacy public.cart has multiple carts for one owner. Resolve them explicitly before migration.';
+    end if;
+
+    execute 'select exists (
+      select 1 from public.carts group by user_id having user_id is null or count(*) > 1
+    )' into invalid_target_carts;
+    if invalid_target_carts then
+      raise exception 'public.carts contains a missing or duplicated owner. Reconcile it before copying legacy carts.';
+    end if;
+
+    execute 'select exists (
+      select 1 from public.carts group by id having id is null or count(*) > 1
+    )' into invalid_target_carts;
+    if invalid_target_carts then
+      raise exception 'public.carts contains a missing or duplicated ID. Reconcile it before copying legacy carts.';
+    end if;
+
+    execute 'select exists (
+      select 1 from public.cart old_cart
+      join public.carts new_cart on new_cart.user_id = old_cart.user_id
+      where new_cart.id <> old_cart.id
+    )' into conflicting_owner;
+    if conflicting_owner then
+      raise exception 'A user already has a different public.carts ID than public.cart. Reconcile it before migration.';
+    end if;
+
+    execute 'select exists (
+      select 1 from public.cart old_cart
+      join public.carts new_cart on new_cart.id = old_cart.id
+      where new_cart.user_id <> old_cart.user_id
+    )' into conflicting_owner;
+    if conflicting_owner then
+      raise exception 'A legacy cart ID is already assigned to another user. Reconcile it before migration.';
+    end if;
+
     execute 'insert into public.carts (id, user_id, created_at, updated_at)
-      select id, user_id, created_at, updated_at from public.cart
-      on conflict (user_id) do nothing';
+      select id, user_id, coalesce(created_at, now()), coalesce(updated_at, now())
+      from public.cart on conflict (user_id) do nothing';
+
+    if to_regclass('public.cart_items') is not null then
+      if exists (
+        select 1 from pg_constraint con
+        where con.conrelid = 'public.cart_items'::regclass
+          and con.contype = 'f'
+          and con.confrelid = to_regclass('public.cart')
+          and (
+            array_length(con.conkey, 1) <> 1
+            or not exists (
+              select 1 from pg_attribute child_att
+              where child_att.attrelid = con.conrelid
+                and child_att.attnum = con.conkey[1]
+                and child_att.attname = 'cart_id'
+            )
+          )
+      ) then
+        raise exception 'public.cart_items has a legacy foreign key other than cart_id -> public.cart. Inspect it before migration.';
+      end if;
+
+      execute 'select exists (
+        select 1 from public.cart_items ci
+        left join public.carts c on c.id = ci.cart_id
+        where c.id is null
+      )' into orphan_item;
+      if orphan_item then
+        raise exception 'public.cart_items contains orphaned cart IDs. Reconcile them before changing its foreign key.';
+      end if;
+
+      for legacy_fk in
+        select con.conname from pg_constraint con
+        where con.conrelid = 'public.cart_items'::regclass
+          and con.contype = 'f'
+          and con.confrelid = to_regclass('public.cart')
+          and array_length(con.conkey, 1) = 1
+          and exists (
+            select 1 from pg_attribute child_att
+            where child_att.attrelid = con.conrelid
+              and child_att.attnum = con.conkey[1]
+              and child_att.attname = 'cart_id'
+          )
+      loop
+        execute format('alter table public.cart_items drop constraint %I', legacy_fk.conname);
+      end loop;
+    end if;
   end if;
 end
 $$;
 
-alter table public.cart_items drop constraint if exists cart_items_cart_id_fkey;
-alter table public.cart_items add constraint cart_items_cart_id_fkey
-  foreign key (cart_id) references public.carts(id) on delete cascade;
+do $$
+begin
+  if not exists (
+    select 1 from pg_constraint con
+    join pg_attribute child_att on child_att.attrelid = con.conrelid and child_att.attnum = con.conkey[1]
+    join pg_attribute parent_att on parent_att.attrelid = con.confrelid and parent_att.attnum = con.confkey[1]
+    where con.contype = 'f'
+      and con.conrelid = 'public.cart_items'::regclass
+      and con.confrelid = 'public.carts'::regclass
+      and array_length(con.conkey, 1) = 1
+      and array_length(con.confkey, 1) = 1
+      and child_att.attname = 'cart_id'
+      and parent_att.attname = 'id'
+  ) then
+    alter table public.cart_items add constraint cart_items_cart_id_carts_fkey
+      foreign key (cart_id) references public.carts(id) on delete cascade not valid;
+  end if;
+end
+$$;
 
 alter table public.bookings drop constraint if exists bookings_status_check;
 alter table public.bookings add constraint bookings_status_check check (status in (
@@ -213,6 +429,16 @@ alter table public.orders add constraint orders_status_check check (status in (
 alter table public.orders drop constraint if exists orders_payment_status_check;
 alter table public.orders add constraint orders_payment_status_check check (payment_status in ('PENDING', 'PAID', 'FAILED', 'REFUNDED'));
 
+do $$
+begin
+  if exists (select 1 from public.carts where user_id is null)
+     or exists (select 1 from public.carts group by user_id having count(*) > 1) then
+    raise exception 'public.carts must contain exactly one non-null user_id per cart. Reconcile existing cart rows first.';
+  end if;
+end
+$$;
+
+create unique index if not exists idx_carts_user_id_unique on public.carts(user_id);
 create index if not exists idx_profiles_user_id on public.profiles(user_id);
 create index if not exists idx_categories_active on public.categories(is_active);
 create index if not exists idx_services_category on public.services(category_id);
@@ -356,7 +582,7 @@ create or replace function public.create_profile_for_new_user()
 returns trigger
 language plpgsql
 security definer
-set search_path = public
+set search_path = ''
 as $$
 declare
   profile_role text;
@@ -375,6 +601,8 @@ begin
 end;
 $$;
 
+revoke all on function public.create_profile_for_new_user() from public;
+
 drop trigger if exists on_auth_user_created on auth.users;
 create trigger on_auth_user_created after insert on auth.users
 for each row execute function public.create_profile_for_new_user();
@@ -389,7 +617,7 @@ create or replace function public.create_booking(
 returns uuid
 language plpgsql
 security definer
-set search_path = public
+set search_path = ''
 as $$
 declare
   new_booking_id uuid;
@@ -428,6 +656,21 @@ $$;
 revoke all on function public.create_booking(uuid, uuid, date, text, text) from public;
 grant execute on function public.create_booking(uuid, uuid, date, text, text) to authenticated;
 
+do $$
+declare
+  existing_function oid := to_regprocedure('public.get_available_partner_bookings()');
+  existing_result text;
+begin
+  if existing_function is not null then
+    select regexp_replace(pg_get_function_result(existing_function), '[[:space:]]+', '', 'g')
+      into existing_result;
+    if existing_result <> 'TABLE(iduuid,service_nametext,service_slugtext,category_slugtext,booking_datedate,booking_timetext,total_amountnumeric,statustext)' then
+      raise exception 'public.get_available_partner_bookings() has an incompatible return contract. Review dependent objects and migrate it manually before rerunning.';
+    end if;
+  end if;
+end
+$$;
+
 create or replace function public.get_available_partner_bookings()
 returns table (
   id uuid,
@@ -436,22 +679,25 @@ returns table (
   category_slug text,
   booking_date date,
   booking_time text,
-  total_amount numeric
+  total_amount numeric,
+  status text
 )
 language plpgsql
 security definer
-set search_path = public
+set search_path = ''
 as $$
 begin
-  if not exists (
-    select 1 from public.profiles p
+  if auth.uid() is null or not exists (
+    select 1
+    from public.profiles p
+    join public.partner_profiles pp on pp.user_id = p.user_id
     where p.user_id = auth.uid() and p.role = 'partner'
   ) then
     raise exception 'A partner account is required.';
   end if;
 
   return query
-  select b.id, s.name, s.slug, c.slug, b.booking_date, b.booking_time, b.total_amount
+  select b.id, s.name, s.slug, c.slug, b.booking_date, b.booking_time, b.total_amount, b.status
   from public.bookings b
   join public.services s on s.id = b.service_id
   left join public.categories c on c.id = s.category_id
@@ -476,11 +722,13 @@ returns table (
 )
 language plpgsql
 security definer
-set search_path = public
+set search_path = ''
 as $$
 begin
-  if not exists (
-    select 1 from public.profiles p
+  if auth.uid() is null or not exists (
+    select 1
+    from public.profiles p
+    join public.partner_profiles pp on pp.user_id = p.user_id
     where p.user_id = auth.uid() and p.role = 'partner'
   ) then
     raise exception 'A partner account is required.';
@@ -504,20 +752,31 @@ create or replace function public.update_partner_booking_status(p_booking_id uui
 returns uuid
 language plpgsql
 security definer
-set search_path = public
+set search_path = ''
 as $$
 declare
   existing_status text;
+  existing_partner_id uuid;
   affected_rows integer;
 begin
+  if auth.uid() is null then
+    raise exception 'Authentication is required.';
+  end if;
+
   if not exists (
-    select 1 from public.profiles p
+    select 1
+    from public.profiles p
+    join public.partner_profiles pp on pp.user_id = p.user_id
     where p.user_id = auth.uid() and p.role = 'partner'
   ) then
     raise exception 'A partner account is required.';
   end if;
 
-  select b.status into existing_status
+  if p_status is null then
+    raise exception 'A booking status is required.';
+  end if;
+
+  select b.status, b.partner_id into existing_status, existing_partner_id
   from public.bookings b
   where b.id = p_booking_id
   for update;
@@ -526,11 +785,29 @@ begin
     raise exception 'This booking is no longer available.';
   end if;
 
-  if existing_status = 'PENDING' and p_status in ('ACCEPTED', 'REJECTED') then
-    update public.bookings
-    set status = p_status, partner_id = case when p_status = 'ACCEPTED' then auth.uid() else null end
-    where id = p_booking_id and partner_id is null;
+  if existing_status = 'PENDING' then
+    if existing_partner_id is not null and existing_partner_id <> auth.uid() then
+      raise exception 'This booking belongs to another partner.';
+    end if;
+    if p_status not in ('ACCEPTED', 'REJECTED') then
+      raise exception 'That booking status change is not allowed.';
+    end if;
+
+    if p_status = 'ACCEPTED' then
+      update public.bookings
+      set status = 'ACCEPTED', partner_id = auth.uid()
+      where id = p_booking_id and status = 'PENDING'
+        and (partner_id is null or partner_id = auth.uid());
+    else
+      update public.bookings
+      set status = 'REJECTED'
+      where id = p_booking_id and status = 'PENDING'
+        and (partner_id is null or partner_id = auth.uid());
+    end if;
   else
+    if existing_partner_id is distinct from auth.uid() then
+      raise exception 'This booking belongs to another partner.';
+    end if;
     if not (
       (existing_status = 'ACCEPTED' and p_status in ('ON_THE_WAY', 'CANCELLED'))
       or (existing_status = 'ON_THE_WAY' and p_status in ('ARRIVED', 'CANCELLED'))
@@ -542,7 +819,7 @@ begin
 
     update public.bookings
     set status = p_status
-    where id = p_booking_id and partner_id = auth.uid();
+    where id = p_booking_id and status = existing_status and partner_id = auth.uid();
   end if;
 
   get diagnostics affected_rows = row_count;
@@ -561,17 +838,47 @@ create or replace function public.create_order_from_cart(p_address_id uuid)
 returns uuid
 language plpgsql
 security definer
-set search_path = public
+set search_path = ''
+as $$
+begin
+  raise exception 'Checkout attempt ID is required. Update the client before creating an order.';
+end;
+$$;
+
+create or replace function public.create_order_from_cart(
+  p_address_id uuid,
+  p_checkout_attempt_id uuid
+)
+returns uuid
+language plpgsql
+security definer
+set search_path = ''
 as $$
 declare
   owned_cart_id uuid;
   new_order_id uuid;
+  existing_customer_id uuid;
   order_total numeric(10, 2);
   item_count integer;
   valid_item_count integer;
 begin
   if auth.uid() is null then
     raise exception 'Authentication is required.';
+  end if;
+  if p_checkout_attempt_id is null then
+    raise exception 'A checkout attempt ID is required.';
+  end if;
+
+  select o.id, o.customer_id
+  into new_order_id, existing_customer_id
+  from public.orders o
+  where o.checkout_attempt_id = p_checkout_attempt_id
+  for update;
+  if found then
+    if existing_customer_id <> auth.uid() then
+      raise exception 'This checkout attempt belongs to another customer.';
+    end if;
+    return new_order_id;
   end if;
 
   if not exists (
@@ -613,22 +920,33 @@ begin
     raise exception 'One or more items are no longer available in the requested quantity.';
   end if;
 
-  insert into public.orders (customer_id, address_id, status, total_amount, payment_status)
-  values (auth.uid(), p_address_id, 'PENDING', order_total, 'PENDING')
+  insert into public.orders (
+    customer_id, address_id, status, total_amount, payment_status, checkout_attempt_id
+  )
+  values (auth.uid(), p_address_id, 'PENDING', order_total, 'PENDING', p_checkout_attempt_id)
+  on conflict (checkout_attempt_id) do nothing
   returning id into new_order_id;
+
+  if new_order_id is null then
+    select o.id, o.customer_id
+    into new_order_id, existing_customer_id
+    from public.orders o
+    where o.checkout_attempt_id = p_checkout_attempt_id
+    for update;
+    if not found then
+      raise exception 'The existing checkout attempt could not be resumed. Retry with the same attempt ID.';
+    end if;
+    if existing_customer_id <> auth.uid() then
+      raise exception 'This checkout attempt belongs to another customer.';
+    end if;
+    return new_order_id;
+  end if;
 
   insert into public.order_items (order_id, product_id, quantity, price)
   select new_order_id, ci.product_id, ci.quantity, p.price
   from public.cart_items ci
   join public.products p on p.id = ci.product_id
   where ci.cart_id = owned_cart_id;
-
-  update public.products p
-  set stock = p.stock - ci.quantity
-  from public.cart_items ci
-  where ci.cart_id = owned_cart_id and p.id = ci.product_id;
-
-  delete from public.cart_items where cart_id = owned_cart_id;
 
   insert into public.notifications (user_id, title, message, type)
   values (auth.uid(), 'Order received', 'Your order has been received.', 'order');
@@ -638,13 +956,15 @@ end;
 $$;
 
 revoke all on function public.create_order_from_cart(uuid) from public;
-grant execute on function public.create_order_from_cart(uuid) to authenticated;
+revoke all on function public.create_order_from_cart(uuid) from anon, authenticated;
+revoke all on function public.create_order_from_cart(uuid, uuid) from public, anon;
+grant execute on function public.create_order_from_cart(uuid, uuid) to authenticated;
 
 create or replace function public.notify_booking_status_change()
 returns trigger
 language plpgsql
 security definer
-set search_path = public
+set search_path = ''
 as $$
 begin
   if new.status is distinct from old.status then
@@ -655,6 +975,8 @@ begin
 end;
 $$;
 
+revoke all on function public.notify_booking_status_change() from public;
+
 drop trigger if exists booking_status_notification on public.bookings;
 create trigger booking_status_notification after update of status on public.bookings
 for each row execute function public.notify_booking_status_change();
@@ -663,7 +985,7 @@ create or replace function public.notify_order_status_change()
 returns trigger
 language plpgsql
 security definer
-set search_path = public
+set search_path = ''
 as $$
 begin
   if new.status is distinct from old.status then
@@ -673,6 +995,8 @@ begin
   return new;
 end;
 $$;
+
+revoke all on function public.notify_order_status_change() from public;
 
 drop trigger if exists order_status_notification on public.orders;
 create trigger order_status_notification after update of status on public.orders

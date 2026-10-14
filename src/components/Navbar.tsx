@@ -6,10 +6,10 @@ import { usePreferences } from '../context/usePreferences'
 
 const links = [
   { label: 'Home', href: '/' },
-  { label: 'Categories', href: '/categories' },
-  { label: 'How it works', href: '/#how-it-works' },
-  { label: 'About', href: '/#about' },
-  { label: 'SAU Partner', href: '/partner/register' },
+  { label: 'About Us', href: '/#about' },
+  { label: 'Explore Services', href: '/categories' },
+  { label: 'Become a Partner', href: '/partner/register' },
+  { label: 'Contact', href: '/contact' },
 ]
 
 export default function Navbar() {

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import Hero from '../components/Hero'
 import CategoryCard from '../components/CategoryCard'
 import ServiceCard from '../components/ServiceCard'
+import { foundingTeam } from '../data/team'
 import { useCatalog } from '../context/useCatalog'
 
 const trustItems = [
@@ -67,7 +68,38 @@ export default function Home() {
         <article className="app-panel" id="download"><span className="app-icon"><Smartphone size={24} /></span><span className="section-kicker">SAU, WHEREVER YOU GO</span><h2>Your everyday,<br />in your pocket.</h2><p>We’re getting the SAU app ready. Join us here to explore everything in one place.</p><Link className="app-link" to="/register"><Download size={15} /> Get early access <ArrowRight size={14} /></Link><span className="app-decoration">s<span>.</span></span></article>
       </section>
 
-      <section className="cta-section container" id="about">
+      <section className="team-section container" id="about">
+        <div className="section-heading team-heading">
+          <div>
+            <span className="section-kicker">MEET OUR TEAM</span>
+            <h2>Founding <span>leaders.</span></h2>
+          </div>
+        </div>
+        <div className="team-grid">
+          {foundingTeam.map((member) => (
+            <article className="team-card" key={member.id}>
+              <div className="team-avatar" aria-label={`${member.name} profile`}>{member.initials}</div>
+              <div className="team-content">
+                <h3>{member.name}</h3>
+                <p className="team-designation">{member.designation}</p>
+                <p>{member.bio}</p>
+                <ul>
+                  {member.responsibilities.map((responsibility) => (
+                    <li key={responsibility}>{responsibility}</li>
+                  ))}
+                </ul>
+                {member.linkedin ? (
+                  <a href={member.linkedin} target="_blank" rel="noreferrer">LinkedIn profile</a>
+                ) : (
+                  <span className="team-placeholder">LinkedIn link to be provided</span>
+                )}
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="cta-section container" id="about-cta">
         <div className="cta-card">
           <div className="cta-orbit cta-orbit-one" /><div className="cta-orbit cta-orbit-two" />
           <div className="cta-content"><span className="cta-eyebrow"><span /> A BETTER KIND OF EVERYDAY</span><h2>Everything you need.<br />One <span>platform.</span></h2><p>From everyday essentials to trusted local professionals — more of what you need, in one thoughtful place.</p><div className="cta-actions"><Link to="/categories" className="button button-white">Get started <ArrowRight size={17} /></Link><span>No fuss. Just a better way.</span></div></div>

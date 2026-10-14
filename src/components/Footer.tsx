@@ -1,11 +1,11 @@
-import { ArrowRight, AtSign, BriefcaseBusiness, MoveUpRight } from 'lucide-react'
+import { ArrowRight, MoveUpRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 const SUPPORT_EMAIL = 'Sausolution.support@gmail.com'
 const footerGroups = [
-  { title: 'Explore', links: [['Platform', '/'], ['Categories', '/categories'], ['How it works', '/#how-it-works'], ['Become a partner', '/partner/register'], ['Download app', '/#download']] },
-  { title: 'Company', links: [['About SAU', '/#about'], ['Careers', `mailto:${SUPPORT_EMAIL}?subject=Careers`], ['Contact', '/contact'], ['Customer support', `mailto:${SUPPORT_EMAIL}`], ['Partner support', `mailto:${SUPPORT_EMAIL}`]] },
-  { title: 'The details', links: [['Privacy policy', `mailto:${SUPPORT_EMAIL}?subject=Privacy%20policy`], ['Terms of service', `mailto:${SUPPORT_EMAIL}?subject=Terms%20of%20service`], ['Refund policy', `mailto:${SUPPORT_EMAIL}?subject=Refund%20policy`]] },
+  { title: 'Explore', links: [['Platform', '/'], ['Categories', '/categories'], ['How it works', '/#how-it-works'], ['Become a partner', '/partner/register'], ['Contact us', '/contact']] },
+  { title: 'Company', links: [['About SAU', '/#about'], ['Customer support', `mailto:${SUPPORT_EMAIL}`], ['Partner support', `mailto:${SUPPORT_EMAIL}?subject=Partner%20support`], ['Contact', '/contact']] },
+  { title: 'The details', links: [['Privacy enquiries', `mailto:${SUPPORT_EMAIL}?subject=Privacy%20policy`], ['Terms enquiries', `mailto:${SUPPORT_EMAIL}?subject=Terms%20of%20service`], ['Support email', `mailto:${SUPPORT_EMAIL}`]] },
 ]
 const currentYear = new Date().getFullYear()
 
@@ -20,7 +20,6 @@ export default function Footer() {
           </Link>
           <p>More time for what matters.<br />A little less to figure out.</p>
           <a className="footer-contact" href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL} <MoveUpRight size={14} /></a>
-          <div className="social-links"><a href="https://www.instagram.com/" aria-label="Instagram"><AtSign size={17} /></a><a href="https://www.linkedin.com/" aria-label="LinkedIn"><BriefcaseBusiness size={16} /></a></div>
         </div>
         {footerGroups.map((group) => <div className="footer-link-group" key={group.title}><h3>{group.title}</h3>{group.links.map(([label, href]) => href.startsWith('mailto:') ? <a key={label} href={href}>{label}</a> : <Link key={label} to={href}>{label}</Link>)}</div>)}
         <div className="footer-note"><span className="footer-note-icon"><ArrowRight size={19} /></span><strong>Everyday life,<br />a little more effortless.</strong><span>Discover something helpful</span><Link to="/categories">Explore SAU <ArrowRight size={15} /></Link></div>

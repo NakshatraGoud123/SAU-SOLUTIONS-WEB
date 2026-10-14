@@ -21,6 +21,7 @@ const Auth = lazy(() => import('./pages/Auth'))
 const Profile = lazy(() => import('./pages/Profile'))
 const PartnerRegistration = lazy(() => import('./pages/PartnerRegistration'))
 const Contact = lazy(() => import('./pages/Contact'))
+const Admin = lazy(() => import('./pages/Admin'))
 
 function PageLoading() {
   return <div className="page-loading" role="status" aria-label="Loading page"><span /><span /><span /></div>
@@ -57,6 +58,7 @@ function RouteContent() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/partner/register" element={<PartnerRegistration />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/admin" element={<Admin />} />
           <Route path="*" element={<Categories />} />
         </Routes>
       </Suspense>

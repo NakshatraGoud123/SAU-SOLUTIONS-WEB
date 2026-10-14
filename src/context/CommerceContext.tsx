@@ -245,8 +245,7 @@ export function CommerceProvider({ children }: { children: ReactNode }) {
     async placeOrder(addressId) {
       const userId = state.customer?.id
       if (!userId) throw new Error('Sign in before placing your order.')
-      const orderId = await createOrderRecord(addressId)
-      setState((current) => ({ ...current, cart: [] }))
+      const orderId = await createOrderRecord(addressId, userId, state.cart)
       void refreshActivity()
       return orderId
     },

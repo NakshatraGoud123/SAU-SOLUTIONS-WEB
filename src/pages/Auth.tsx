@@ -50,7 +50,7 @@ export default function Auth({ mode }: AuthProps) {
       const profile = result.profile
       signIn({ id: profile.user_id, name: profile.full_name, email: profile.email, role: profile.role })
       setMessage(result.message)
-      navigate('/profile')
+      navigate(!isRegister && searchParams.get('redirect') === '/admin' ? '/admin' : '/profile')
     } catch {
       setError('Unable to complete authentication. Please try again.')
     } finally {

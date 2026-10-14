@@ -67,15 +67,30 @@ export default function Checkout() {
     try {
       let addressId = selectedAddressId
       if (!addressId) {
-        const saved = await saveAddress(customer.id, {
+        const addressDetails = {
           full_name: address.fullName.trim(),
           phone: address.phone.trim(),
           address_line: address.line1.trim(),
           city: address.city || location?.city || '',
           postal_code: address.postalCode.trim(),
-        })
-        if (!saved.id) throw new Error('The saved address did not include an ID.')
-        addressId = saved.id
+        }
+        const matchingAddress = savedAddresses.find((item) =>
+          item.full_name === addressDetails.full_name
+          && item.phone === addressDetails.phone
+          && item.address_line === addressDetails.address_line
+          && item.city === addressDetails.city
+          && item.postal_code === addressDetails.postal_code,
+        )
+        if (matchingAddress?.id) {
+          addressId = matchingAddress.id
+          setSelectedAddressId(matchingAddress.id)
+        } else {
+          const saved = await saveAddress(customer.id, addressDetails)
+          if (!saved.id) throw new Error('The saved address did not include an ID.')
+          addressId = saved.id
+          setSelectedAddressId(saved.id)
+          setSavedAddresses((current) => [...current, saved])
+        }
       }
       const orderId = await placeOrder(addressId)
       navigate(`/tracking?id=${encodeURIComponent(orderId)}`)

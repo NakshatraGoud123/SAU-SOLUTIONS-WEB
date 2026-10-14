@@ -24,8 +24,14 @@ export default function Hero() {
       <div className="hero-grid container">
         <motion.div className="hero-copy" initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55 }}>
           <div className="eyebrow"><span className="eyebrow-dot" /> A little more ease, every day</div>
-          <h1>Your everyday life,<br />made <span>remarkably</span> easier.</h1>
-          <p className="hero-subtitle">Discover trusted services, everyday essentials and professionals — all from one platform.</p>
+          <h1>SAU Solutions — All Services in One App</h1>
+          <p className="hero-subtitle">Discover everyday services, essential products, and trusted professionals through one convenient platform.</p>
+
+          <div className="hero-cta-row">
+            <Link className="button button-primary" to="/categories">Explore SAU Services <ArrowRight size={16} /></Link>
+            <Link className="button button-secondary" to="/partner/register">Become a Partner</Link>
+          </div>
+
           <form className="hero-search" onSubmit={submitSearch}>
             <label className="search-location">
               <MapPin size={19} />
