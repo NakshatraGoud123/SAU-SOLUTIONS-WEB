@@ -1,6 +1,6 @@
 # SAU SOLUTIONS website
 
-Pre-launch informational website for SAU SOLUTIONS and the planned SAU SERVICES customer app. The site does not currently process orders, bookings, payments, or customer transactions.
+Pre-launch website for SAU SOLUTIONS and the planned SAU SERVICES customer app. The codebase includes Supabase-backed catalog, account, booking-request, cart, and pending product-order flows when configured. Checkout does not collect or verify payments, and production availability of those workflows must be confirmed against the deployed Supabase project.
 
 ## Local development
 
@@ -18,7 +18,7 @@ npm run build
 npm run lint
 ```
 
-The build uses the GitHub Pages repository subpath `/SAU-SOLUTIONS-WEB/` and creates `dist/404.html` for client-side route fallback. The Pages deployment workflow and GitHub Pages settings must be configured separately and are intentionally not included in this project change.
+The production build uses the root path for the `sausolution.com` custom domain; local development uses the repository subpath `/SAU-SOLUTIONS-WEB/`. The build creates `dist/404.html` and prerenders the public routes listed in `seo-routes.json`. The GitHub Pages workflow uploads `dist`; the repository's Pages and custom-domain settings must still be configured in GitHub.
 
 ## Launch messaging
 

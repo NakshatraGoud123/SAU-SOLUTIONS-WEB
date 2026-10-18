@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type FormEvent } from 'react'
+import { useState, type FormEvent } from 'react'
 import { ArrowDown, ArrowRight, LocateFixed, MapPin, Menu, Moon, Search, ShoppingBag, Sun, UserRound, X } from 'lucide-react'
 import { Link, NavLink } from 'react-router-dom'
 import { useCommerce } from '../context/useCommerce'
@@ -6,7 +6,7 @@ import { usePreferences } from '../context/usePreferences'
 
 const links = [
   { label: 'Home', href: '/' },
-  { label: 'About Us', href: '/#about' },
+  { label: 'About Us', href: '/about' },
   { label: 'Explore Services', href: '/categories' },
   { label: 'Become a Partner', href: '/partner/register' },
   { label: 'Contact', href: '/contact' },
@@ -18,15 +18,7 @@ export default function Navbar() {
   const [searchValue, setSearchValue] = useState('')
   const { theme, toggleTheme, location, locationStatus, locationError, detectLocation, searchLocation } = usePreferences()
   const { cart, customer } = useCommerce()
-  const requestedLocation = useRef(false)
   const cartCount = cart.reduce((total, line) => total + line.quantity, 0)
-
-  useEffect(() => {
-    if (!location && !requestedLocation.current) {
-      requestedLocation.current = true
-      void detectLocation()
-    }
-  }, [location, detectLocation])
 
   function submitLocationSearch(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -53,6 +45,7 @@ export default function Navbar() {
           <button className="location-button" type="button" aria-label={`Current location: ${locationLabel}`} aria-expanded={locationOpen} aria-controls="location-popover" onClick={() => setLocationOpen(!locationOpen)}><MapPin size={17} /><span><small>YOUR LOCATION</small>{locationLabel}</span><ArrowDown size={13} /></button>
           {locationOpen && <div className="location-popover" id="location-popover">
             <span className="location-popover-title">Set your service area</span>
+            <p className="location-purpose">Choose an area to explore relevant local listings. Your location is not requested until you select the location option below.</p>
             <form onSubmit={submitLocationSearch} className="location-search-form"><Search size={16} /><input aria-label="Search location" placeholder="Search area or city" value={searchValue} onChange={(event) => setSearchValue(event.target.value)} /><button type="submit" disabled={locationStatus === 'detecting'}>Search</button></form>
             <button className="location-gps-button" type="button" onClick={() => { void detectLocation() }} disabled={locationStatus === 'detecting'}><LocateFixed size={16} />{locationStatus === 'detecting' ? 'Detecting location...' : 'Use My Current Location'}</button>
             {locationError && <p role="alert" className="location-error">{locationError}</p>}

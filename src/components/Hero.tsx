@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react'
-import { ArrowRight, ArrowUpRight, Check, MapPin, Search, ShieldCheck, Star } from 'lucide-react'
+import { ArrowRight, ArrowUpRight, MapPin, Search } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import IconGlyph from './IconGlyph'
@@ -7,7 +7,7 @@ import PhotoImage from './PhotoImage'
 import { heroPhoto } from '../data/imageCatalog'
 import { usePreferences } from '../context/usePreferences'
 
-const suggestions = ['Home cleaning', 'Electrician', 'Fresh groceries', 'Beauty at home']
+const suggestions = ['Home services', 'Mechanic services', 'Food & beverages', 'Tech services']
 
 export default function Hero() {
   const [search, setSearch] = useState('')
@@ -49,22 +49,22 @@ export default function Hero() {
           <div className="popular-searches"><span>Popular:</span>
             {suggestions.map((suggestion) => <button key={suggestion} type="button" onClick={() => navigate(`/categories?q=${encodeURIComponent(suggestion)}`)}>{suggestion}</button>)}
           </div>
-          <div className="hero-proof"><div className="avatar-stack"><span>A</span><span>R</span><span>M</span><span>+</span></div><div><strong>Loved by your neighbourhood</strong><small><Star size={12} fill="currentColor" /> 4.9 average experience</small></div></div>
+          <div className="hero-proof"><MapPin size={17} /><span>Designed for local discovery in Hyderabad</span></div>
         </motion.div>
 
         <motion.div className="hero-visual" initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.65, delay: 0.12 }}>
           <div className="visual-backdrop">
-            <div className="hero-service-tile tile-home"><span className="tile-icon tone-violet"><IconGlyph name="house" size={24} /></span><div><strong>Home, sorted.</strong><small>Trusted help, right on time</small></div><Check size={17} /></div>
-            <div className="hero-service-tile tile-grocery"><span className="tile-icon tone-green"><IconGlyph name="shopping-basket" size={23} /></span><div><strong>Daily essentials</strong><small>At your door in 25 min</small></div><span className="tile-status">On the way</span></div>
+            <div className="hero-service-tile tile-home"><span className="tile-icon tone-violet"><IconGlyph name="house" size={24} /></span><div><strong>Home services</strong><small>Explore published listings</small></div></div>
+            <div className="hero-service-tile tile-grocery"><span className="tile-icon tone-green"><IconGlyph name="shopping-basket" size={23} /></span><div><strong>Everyday products</strong><small>Browse the current catalog</small></div></div>
             <div className="visual-center-card">
-              <div className="visual-card-top"><span className="mini-brand">s<span>.</span></span><span className="live-status"><i /> AVAILABLE NOW</span></div>
+              <div className="visual-card-top"><span className="mini-brand">s<span>.</span></span><span className="visual-brand-label">SAU SERVICES</span></div>
               <PhotoImage className="visual-illustration" photo={heroPhoto} label="Everyday family life" loading="eager" fetchPriority="high" />
-              <div className="visual-card-caption"><span>Life's little to-do list</span><strong>Consider it handled.</strong></div>
-              <div className="visual-card-footer"><span><ShieldCheck size={15} /> Verified & trusted</span><Link to="/categories" aria-label="Explore services"><ArrowUpRight size={18} /></Link></div>
+              <div className="visual-card-caption"><span>Everyday needs, together</span><strong>Explore what’s listed.</strong></div>
+              <div className="visual-card-footer"><span>Services & products</span><Link to="/categories" aria-label="Explore services"><ArrowUpRight size={18} /></Link></div>
             </div>
-            <div className="floating-note note-rating"><span><Star size={13} fill="currentColor" /></span><div><strong>4.9/5</strong><small>Local favourites</small></div></div>
-            <div className="floating-note note-pro"><span><ShieldCheck size={20} /></span><div><strong>Every pro</strong><small>carefully verified</small></div></div>
-            <div className="visual-caption"><span /> ONE APP. A WHOLE LOT LESS TO DO <ArrowUpRight size={13} /></div>
+            <div className="floating-note note-catalog"><span><MapPin size={15} /></span><div><strong>Local discovery</strong><small>Explore by category</small></div></div>
+            <div className="floating-note note-search"><span><Search size={18} /></span><div><strong>Browse listings</strong><small>Availability may vary</small></div></div>
+            <div className="visual-caption"><span /> ALL SERVICES IN ONE APP <ArrowUpRight size={13} /></div>
           </div>
         </motion.div>
       </div>

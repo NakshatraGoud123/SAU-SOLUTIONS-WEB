@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 const SUPPORT_EMAIL = 'Sausolution.support@gmail.com'
 const footerGroups = [
   { title: 'Explore', links: [['Platform', '/'], ['Categories', '/categories'], ['How it works', '/#how-it-works'], ['Become a partner', '/partner/register'], ['Contact us', '/contact']] },
-  { title: 'Company', links: [['About SAU', '/#about'], ['Customer support', `mailto:${SUPPORT_EMAIL}`], ['Partner support', `mailto:${SUPPORT_EMAIL}?subject=Partner%20support`], ['Contact', '/contact']] },
+  { title: 'Company', links: [['About SAU', '/about'], ['Customer support', `mailto:${SUPPORT_EMAIL}`], ['Partner support', `mailto:${SUPPORT_EMAIL}?subject=Partner%20support`], ['Contact', '/contact']] },
   { title: 'The details', links: [['Privacy enquiries', `mailto:${SUPPORT_EMAIL}?subject=Privacy%20policy`], ['Terms enquiries', `mailto:${SUPPORT_EMAIL}?subject=Terms%20of%20service`], ['Support email', `mailto:${SUPPORT_EMAIL}`]] },
 ]
 const currentYear = new Date().getFullYear()

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowLeft, BarChart3, CalendarDays, CircleAlert, Package, RefreshCw, ShieldCheck, ShoppingBag, Users, Wrench } from 'lucide-react'
 import { isSupabaseConfigured } from '../lib/supabase'
-import { getCurrentProfile, onAuthStateChange } from '../services/authService'
+import { getCurrentProfile, getSession, onAuthStateChange } from '../services/authService'
 import { fetchAdminDashboard, type AdminDashboardData } from '../services/adminService'
 
 type AdminState = 'checking' | 'loading' | 'ready' | 'error' | 'forbidden' | 'signed-out'
@@ -34,6 +34,13 @@ export default function Admin() {
       }
 
       try {
+        const { data: sessionData, error: sessionError } = await getSession()
+        if (sessionError) throw new Error(sessionError.message)
+        if (!sessionData.session) {
+          setAdminState('signed-out')
+          return
+        }
+
         const profile = await getCurrentProfile()
         if (!active) return
         if (!profile) {
