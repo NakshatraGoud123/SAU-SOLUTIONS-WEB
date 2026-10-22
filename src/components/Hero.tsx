@@ -1,18 +1,40 @@
-import { useState, type FormEvent } from 'react'
-import { ArrowRight, ArrowUpRight, MapPin, Search } from 'lucide-react'
+import { useMemo, useState, type FormEvent } from 'react'
+import { ArrowRight, MapPin, Search } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
-import { motion } from 'framer-motion'
-import IconGlyph from './IconGlyph'
-import PhotoImage from './PhotoImage'
-import { heroPhoto } from '../data/imageCatalog'
+import { motion, useReducedMotion } from 'framer-motion'
 import { usePreferences } from '../context/usePreferences'
+import NeighborhoodExperience from './NeighborhoodExperience'
+import type { NeighborhoodCopy } from './neighborhood-copy'
 
-const suggestions = ['Home services', 'Mechanic services', 'Food & beverages', 'Tech services']
+const copy: Record<'en' | 'hi', NeighborhoodCopy> = {
+  en: {
+    eyebrow: 'SAU SERVICES · PRE-LAUNCH',
+    title: 'Your whole neighbourhood,',
+    accent: 'in one app.',
+    subtitle: 'A thoughtful preview of the local shops, skilled professionals and everyday services SAU SERVICES is being built to bring closer together.',
+    explore: 'Explore categories', partner: 'Partner information', search: 'What do you need today?',
+    location: 'Your location', searchButton: 'Search categories', preview: 'An illustrative neighbourhood preview · Listings and availability are not confirmed.',
+    day: 'Day', night: 'Night', language: 'हिन्दी',
+  },
+  hi: {
+    eyebrow: 'SAU SERVICES · जल्द आ रहा है',
+    title: 'आपका पूरा मोहल्ला,',
+    accent: 'एक ही ऐप में।',
+    subtitle: 'स्थानीय दुकानों, कुशल पेशेवरों और रोज़मर्रा की सेवाओं की एक झलक, जिन्हें SAU SERVICES एक साथ लाने की तैयारी कर रहा है।',
+    explore: 'श्रेणियाँ देखें', partner: 'पार्टनर जानकारी', search: 'आज आपको क्या चाहिए?',
+    location: 'आपका स्थान', searchButton: 'श्रेणियाँ खोजें', preview: 'मोहल्ले का एक कल्पनात्मक दृश्य · लिस्टिंग और उपलब्धता की पुष्टि नहीं है।',
+    day: 'दिन', night: 'रात', language: 'English',
+  },
+} as const
 
 export default function Hero() {
   const [search, setSearch] = useState('')
+  const [isNight, setIsNight] = useState(false)
+  const [language, setLanguage] = useState<'en' | 'hi'>('en')
   const navigate = useNavigate()
   const { location, locationStatus } = usePreferences()
+  const reduceMotion = useReducedMotion()
+  const text = useMemo(() => copy[language], [language])
 
   function submitSearch(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -20,55 +42,40 @@ export default function Hero() {
   }
 
   return (
-    <section className="hero-section">
-      <div className="hero-grid container">
-        <motion.div className="hero-copy" initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55 }}>
-          <div className="eyebrow"><span className="eyebrow-dot" /> A little more ease, every day</div>
-          <h1>SAU Solutions — All Services in One App</h1>
-          <p className="hero-subtitle">Discover everyday services, essential products, and trusted professionals through one convenient platform.</p>
-
-          <div className="hero-cta-row">
-            <Link className="button button-primary" to="/categories">Explore SAU Services <ArrowRight size={16} /></Link>
-            <Link className="button button-secondary" to="/partner/register">Become a Partner</Link>
+    <section className="hero-section neighborhood-hero" aria-labelledby="home-title">
+      <div className="neighborhood-hero-inner container">
+        <motion.div className="neighborhood-copy" initial={reduceMotion ? false : { opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: reduceMotion ? 0.01 : 0.5 }}>
+          <div className="eyebrow"><span className="eyebrow-dot" /> {text.eyebrow}</div>
+          <h1 id="home-title">{text.title}<br /><span>{text.accent}</span></h1>
+          <p className="neighborhood-subtitle">{text.subtitle}</p>
+          <div className="neighborhood-actions">
+            <Link className="button button-primary" to="/categories">{text.explore}<ArrowRight size={16} /></Link>
+            <Link className="button button-secondary" to="/partner/register">{text.partner}</Link>
           </div>
-
-          <form className="hero-search" onSubmit={submitSearch}>
+          <form className="hero-search neighborhood-search" onSubmit={submitSearch}>
             <label className="search-location">
-              <MapPin size={19} />
-              <span className="sr-only">Your location</span>
-              <input aria-label="Your location" readOnly value={location?.label ?? (locationStatus === 'detecting' ? 'Detecting location...' : 'Set location')} />
+              <MapPin size={19} aria-hidden="true" />
+              <span className="sr-only">{text.location}</span>
+              <input aria-label={text.location} readOnly value={location?.label ?? (locationStatus === 'detecting' ? 'Detecting location…' : text.location)} />
             </label>
-            <span className="search-divider" />
+            <span className="search-divider" aria-hidden="true" />
             <label className="search-query">
-              <Search size={19} />
-              <span className="sr-only">What do you need?</span>
-              <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="What do you need today?" />
+              <Search size={19} aria-hidden="true" />
+              <span className="sr-only">{text.search}</span>
+              <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder={text.search} />
             </label>
-            <button className="search-submit" type="submit" aria-label="Search services"><ArrowRight size={20} /></button>
+            <button className="search-submit" type="submit" aria-label={text.searchButton}><ArrowRight size={20} /></button>
           </form>
-          <div className="popular-searches"><span>Popular:</span>
-            {suggestions.map((suggestion) => <button key={suggestion} type="button" onClick={() => navigate(`/categories?q=${encodeURIComponent(suggestion)}`)}>{suggestion}</button>)}
-          </div>
-          <div className="hero-proof"><MapPin size={17} /><span>Designed for local discovery in Hyderabad</span></div>
+          <p className="neighborhood-disclaimer"><span aria-hidden="true">✳</span> {text.preview}</p>
         </motion.div>
-
-        <motion.div className="hero-visual" initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.65, delay: 0.12 }}>
-          <div className="visual-backdrop">
-            <div className="hero-service-tile tile-home"><span className="tile-icon tone-violet"><IconGlyph name="house" size={24} /></span><div><strong>Home services</strong><small>Explore published listings</small></div></div>
-            <div className="hero-service-tile tile-grocery"><span className="tile-icon tone-green"><IconGlyph name="shopping-basket" size={23} /></span><div><strong>Everyday products</strong><small>Browse the current catalog</small></div></div>
-            <div className="visual-center-card">
-              <div className="visual-card-top"><span className="mini-brand">s<span>.</span></span><span className="visual-brand-label">SAU SERVICES</span></div>
-              <PhotoImage className="visual-illustration" photo={heroPhoto} label="Everyday family life" loading="eager" fetchPriority="high" />
-              <div className="visual-card-caption"><span>Everyday needs, together</span><strong>Explore what’s listed.</strong></div>
-              <div className="visual-card-footer"><span>Services & products</span><Link to="/categories" aria-label="Explore services"><ArrowUpRight size={18} /></Link></div>
-            </div>
-            <div className="floating-note note-catalog"><span><MapPin size={15} /></span><div><strong>Local discovery</strong><small>Explore by category</small></div></div>
-            <div className="floating-note note-search"><span><Search size={18} /></span><div><strong>Browse listings</strong><small>Availability may vary</small></div></div>
-            <div className="visual-caption"><span /> ALL SERVICES IN ONE APP <ArrowUpRight size={13} /></div>
-          </div>
-        </motion.div>
+        <NeighborhoodExperience
+          isNight={isNight}
+          language={language}
+          onToggleNight={() => setIsNight((value) => !value)}
+          onToggleLanguage={() => setLanguage((value) => value === 'en' ? 'hi' : 'en')}
+          text={text}
+        />
       </div>
-      <div className="hero-bottom-glow" />
     </section>
   )
 }

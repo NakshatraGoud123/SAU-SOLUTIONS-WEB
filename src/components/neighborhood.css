@@ -1,0 +1,181 @@
+.neighborhood-hero {
+  --town-bg: #edf5e9;
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 75% 44%, #eff8ee 0%, #f7faf4 48%, #fff 100%);
+  transition: background-color .35s ease;
+}
+.neighborhood-hero::before {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  content: '';
+  opacity: .35;
+  background-image: radial-gradient(#78a97c 0.65px, transparent 0.65px);
+  background-size: 22px 22px;
+  mask-image: linear-gradient(90deg, transparent 20%, #000 100%);
+}
+.neighborhood-hero-inner {
+  position: relative;
+  z-index: 1;
+  min-height: min(760px, calc(100svh - 82px));
+  padding-block: 52px 48px;
+  display: grid;
+  grid-template-columns: minmax(330px, .78fr) minmax(0, 1.22fr);
+  align-items: center;
+  gap: clamp(20px, 3vw, 54px);
+}
+.neighborhood-copy { position: relative; z-index: 2; padding-block: 10px; }
+.neighborhood-copy h1 {
+  margin: 22px 0 16px;
+  color: #163b2a;
+  font: 800 clamp(42px, 5.15vw, 68px)/1.04 var(--heading);
+  letter-spacing: -.065em;
+}
+.neighborhood-copy h1 span { color: #37845a; }
+.neighborhood-subtitle { max-width: 470px; color: #5f7466; font-size: 15px; line-height: 1.8; }
+.neighborhood-actions { display: flex; flex-wrap: wrap; gap: 11px; margin-top: 23px; }
+.neighborhood-hero .button-primary { background: #328457; box-shadow: 0 9px 22px #32845732; }
+.neighborhood-hero .button-primary:hover { background: #256d46; }
+.neighborhood-hero .button-secondary { border: 1px solid #dce9df; background: rgba(255,255,255,.78); color: #35694b; }
+.neighborhood-search { margin-top: 25px; box-shadow: 0 12px 35px #395c4014; }
+.neighborhood-search .search-submit { background: #328457; }
+.neighborhood-disclaimer { max-width: 475px; display: flex; align-items: flex-start; gap: 8px; margin: 16px 0 0; color: #718375; font-size: 10px; line-height: 1.6; }
+.neighborhood-disclaimer > span { color: #48a66e; }
+
+.neighborhood-experience {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  min-width: 0;
+  height: clamp(420px, 42vw, 610px);
+  overflow: hidden;
+  border: 1px solid #d9e8d5;
+  border-radius: 38px;
+  background: linear-gradient(145deg, #e4f1df, #eff4e6 50%, #d4e7d2);
+  box-shadow: 0 30px 90px #37593c21, inset 0 1px #ffffffa8;
+  perspective: 1000px;
+}
+.neighborhood-experience::after {
+  position: absolute;
+  z-index: 1;
+  inset: auto 0 0;
+  height: 27%;
+  pointer-events: none;
+  content: '';
+  background: linear-gradient(transparent, #edf5e9a8);
+}
+.neighborhood-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.neighborhood-controls { position: absolute; z-index: 4; top: 17px; right: 17px; display: flex; align-items: center; gap: 7px; }
+.neighborhood-controls button {
+  min-height: 35px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 0 11px;
+  border: 1px solid #ffffffd9;
+  border-radius: 999px;
+  background: #ffffffd9;
+  color: #355b42;
+  box-shadow: 0 5px 16px #24422c17;
+  font-size: 10px;
+  font-weight: 800;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+}
+.neighborhood-controls button:hover { background: #fff; transform: translateY(-1px); }
+.neighborhood-label {
+  position: absolute;
+  z-index: 3;
+  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  border: 1px solid #ffffffed;
+  border-radius: 999px;
+  background: #fffffff0;
+  color: #315b40;
+  box-shadow: 0 7px 23px #23472c24;
+  font-size: 10px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform .2s, background .2s, color .2s;
+  backdrop-filter: blur(9px);
+}
+.neighborhood-label:hover { transform: translateY(-3px) scale(1.03); background: #328457; color: white; }
+.neighborhood-label > span { color: #54a26e; font-size: 13px; }
+.neighborhood-label:hover > span { color: white; }
+.label-shops { top: 24%; left: 8%; }
+.label-vendors { top: 40%; right: 5%; }
+.label-mechanics { top: 59%; right: 7%; }
+.label-home { top: 71%; left: 9%; }
+.label-delivery { top: 50%; left: 3%; }
+.scene-scroll-progress { position: absolute; z-index: 5; top: 0; left: 0; right: 0; height: 3px; background: #ffffff78; }
+.scene-scroll-progress > span { display: block; height: 100%; background: linear-gradient(90deg, #3f9a61, #e4b455); transition: width .12s linear; }
+.scene-bottom-note { position: absolute; z-index: 3; right: 18px; bottom: 14px; left: 18px; color: #536c59; font-size: 9px; font-weight: 700; text-align: center; letter-spacing: .02em; }
+.is-night.neighborhood-experience { border-color: #35475c; background: linear-gradient(145deg, #14253b, #23374f 52%, #172b40); box-shadow: 0 30px 90px #08152635, inset 0 1px #ffffff20; }
+.is-night.neighborhood-experience::after { background: linear-gradient(transparent, #14253bc9); }
+.is-night .neighborhood-label { border-color: #59708a; background: #20354ce8; color: #e8f1df; }
+.is-night .neighborhood-label > span { color: #a1d19b; }
+.is-night .scene-bottom-note { color: #c3d2c0; }
+.is-night .neighborhood-controls button { border-color: #526981; background: #20354ced; color: #e8f1df; }
+.neighborhood-fallback .neighborhood-canvas { display: none; }
+.neighborhood-fallback-art { position: absolute; inset: 7% 4% 12%; overflow: hidden; border-radius: 30px; background: linear-gradient(#dceee0 50%, #b8d3a9 50%); }
+.fallback-road { position: absolute; top: 43%; left: -10%; width: 120%; height: 23%; transform: rotate(-15deg); background: #707b77; border-block: 6px solid #e6e1c5; }
+.fallback-house, .fallback-shop { position: absolute; bottom: 42%; width: 19%; height: 28%; border: 5px solid #fff0d8; border-bottom-width: 0; background: #d8a36b; clip-path: polygon(50% 0,100% 34%,100% 100%,0 100%,0 34%); }
+.fallback-house::after, .fallback-shop::after { position: absolute; right: 28%; bottom: 0; left: 28%; height: 45%; content: ''; background: #6a8c85; }
+.house-one { left: 13%; }.house-two { right: 15%; transform: scale(.82); background: #8cad7e; }
+.fallback-shop { bottom: 37%; left: 42%; width: 21%; height: 34%; background: #d8b85f; }
+.fallback-tree { position: absolute; bottom: 42%; width: 8%; aspect-ratio: 1; border-radius: 50%; background: #4d9362; box-shadow: 0 12px 0 -7px #815f43; }
+.tree-one { left: 4%; }.tree-two { right: 4%; bottom: 37%; }
+.fallback-car { position: absolute; top: 48%; left: 2%; padding: 8px 17px; border-radius: 8px 13px 7px 7px; background: #39845b; color: #22372a; box-shadow: 0 7px 0 -3px #252f34; animation: fallback-drive 12s linear infinite; }
+.fallback-label-list { position: absolute; z-index: 3; right: 10px; bottom: 40px; left: 10px; display: flex; justify-content: center; flex-wrap: wrap; gap: 5px; }
+.fallback-label-list button { padding: 7px 10px; border: 1px solid #fff; border-radius: 999px; background: #fffffff2; color: #315b40; font-size: 9px; font-weight: 800; }
+@keyframes fallback-drive { from { transform: translateX(0); } to { transform: translateX(640px); } }
+
+:root[data-theme='dark'] .neighborhood-hero { background: radial-gradient(ellipse at 75% 44%, #1c3429, #101c19 54%, #101827); }
+:root[data-theme='dark'] .neighborhood-copy h1 { color: #e7f1e6; }
+:root[data-theme='dark'] .neighborhood-subtitle, :root[data-theme='dark'] .neighborhood-disclaimer { color: #adbfad; }
+:root[data-theme='dark'] .neighborhood-hero .button-secondary { border-color: #435846; background: #17271e; color: #c4e1c9; }
+:root[data-theme='dark'] .neighborhood-search { border-color: #334539; background: #17251d; }
+
+@media (max-width: 1000px) {
+  .neighborhood-hero-inner { grid-template-columns: minmax(280px, .8fr) minmax(0, 1.2fr); gap: 20px; }
+  .neighborhood-copy h1 { font-size: clamp(40px, 5.6vw, 58px); }
+  .neighborhood-experience { height: clamp(400px, 50vw, 540px); border-radius: 30px; }
+  .neighborhood-label { font-size: 9px; padding-inline: 9px; }
+}
+@media (max-width: 760px) {
+  .neighborhood-hero-inner { min-height: 0; grid-template-columns: minmax(0, 1fr); gap: 23px; padding-block: 40px 30px; }
+  .neighborhood-copy h1 { margin-top: 17px; font-size: clamp(43px, 10vw, 62px); }
+  .neighborhood-subtitle { max-width: 590px; font-size: 13px; }
+  .neighborhood-experience { height: clamp(360px, 86vw, 500px); }
+  .neighborhood-search { max-width: 580px; }
+}
+@media (max-width: 500px) {
+  .neighborhood-hero-inner { padding-top: 32px; }
+  .neighborhood-copy h1 { font-size: clamp(39px, 10vw, 48px); letter-spacing: -.055em; }
+  .neighborhood-actions .button { min-height: 42px; padding-inline: 13px; font-size: 11px; }
+  .neighborhood-search { min-height: 58px; gap: 5px; padding: 6px; }
+  .neighborhood-search .search-location { padding-inline: 4px 1px; }
+  .neighborhood-search .search-location input { width: 41px; font-size: 10px; }
+  .neighborhood-search .search-location svg, .neighborhood-search .search-query svg { width: 15px; }
+  .neighborhood-search .search-query input { font-size: 10px; }
+  .neighborhood-search .search-submit { width: 40px; height: 40px; flex-basis: 40px; }
+  .neighborhood-experience { height: 390px; border-radius: 24px; }
+  .neighborhood-controls { top: 11px; right: 11px; }
+  .neighborhood-controls button { min-height: 31px; padding-inline: 9px; font-size: 9px; }
+  .neighborhood-label { min-height: 30px; gap: 5px; padding-inline: 8px; font-size: 8px; }
+  .label-shops { top: 23%; left: 4%; }
+  .label-vendors { top: 39%; right: 3%; }
+  .label-mechanics { top: 59%; right: 3%; }
+  .label-home { top: 72%; left: 5%; }
+  .label-delivery { top: 51%; left: 2%; }
+  .scene-bottom-note { right: 10px; bottom: 10px; left: 10px; font-size: 8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .neighborhood-controls button, .neighborhood-label, .scene-scroll-progress > span { transition: none; }
+  .fallback-car { animation: none; }
+}

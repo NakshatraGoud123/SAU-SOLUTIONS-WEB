@@ -106,7 +106,7 @@ export default function Checkout() {
 
   return <div className="flow-page container">
     <Link className="back-link" to="/cart"><ArrowLeft size={15} /> Back to your bag</Link>
-    <div className="flow-heading"><span className="section-kicker">SECURE CHECKOUT</span><h1>Delivery details</h1><p>Tell us where to bring your essentials.</p></div>
+    <div className="flow-heading"><span className="section-kicker">PRE-LAUNCH ORDER REQUEST</span><h1>Delivery details</h1><p>Review the order request flow. Submitting does not confirm product availability or delivery.</p></div>
     <div className="cart-layout checkout-layout">
       <form className="flow-form" onSubmit={(event) => void submit(event)}>
         <h2>Delivery address</h2>
@@ -124,13 +124,13 @@ export default function Checkout() {
           <label>PIN code<input required inputMode="numeric" autoComplete="postal-code" maxLength={6} pattern="\d{6}" value={address.postalCode} onChange={(event) => updateAddress('postalCode', event.target.value)} /></label>
         </div>
         {error && <p className="form-error" role="alert">{error}</p>}
-        <div className="payment-note"><ShieldCheck size={18} /><span><strong>Payment is not collected here.</strong><small>Your order total is calculated from the current database prices.</small></span></div>
-        <button className="button button-primary" type="submit" disabled={saving}>{saving ? 'Placing order…' : 'Place order'} <ArrowRight size={16} /></button>
+        <div className="payment-note"><ShieldCheck size={18} /><span><strong>Pre-launch order request</strong><small>Submitting may save an order request; it does not confirm fulfillment.</small></span></div>
+        <button className="button button-primary" type="submit" disabled={saving}>{saving ? 'Submitting request…' : 'Submit order request'} <ArrowRight size={16} /></button>
       </form>
       <aside className="flow-summary"><span className="section-kicker">ORDER SUMMARY</span><h2>Your essentials.</h2>{cart.map((line) => {
         const product = services.find((service) => service.id === line.serviceId && service.kind === 'product')
         return product ? <div className="summary-row" key={line.serviceId}><span>{product.name} × {line.quantity}</span><strong>₹{(product.price * line.quantity).toLocaleString('en-IN')}</strong></div> : null
-      })}<div className="summary-total"><span>Total</span><strong>₹{total.toLocaleString('en-IN')}</strong></div><p className="summary-note">Payment processing is not configured.</p></aside>
+      })}<div className="summary-total"><span>Total</span><strong>₹{total.toLocaleString('en-IN')}</strong></div><p className="summary-note">No payment is collected on this website.</p></aside>
     </div>
   </div>
 }

@@ -6,7 +6,6 @@ import { useCommerce } from '../context/useCommerce'
 import { useCatalog } from '../context/useCatalog'
 import PhotoImage from '../components/PhotoImage'
 import { servicePhotos } from '../data/imageCatalog'
-import { usePreferences } from '../context/usePreferences'
 import { createReview } from '../services/reviewService'
 
 export default function ServiceDetails() {
@@ -16,7 +15,6 @@ export default function ServiceDetails() {
   const [added, setAdded] = useState(false)
   const [actionError, setActionError] = useState('')
   const { addToCart, bookings, customer } = useCommerce()
-  const { location } = usePreferences()
   const navigate = useNavigate()
   const [reviewRating, setReviewRating] = useState('5')
   const [reviewComment, setReviewComment] = useState('')
@@ -83,7 +81,7 @@ export default function ServiceDetails() {
           <h1>{service.name}</h1>
           <p className="detail-description">{service.description}</p>
           {service.rating > 0 && <div className="detail-rating"><span><Star size={15} fill="currentColor" /> {service.rating}</span><span>{service.reviews} thoughtful reviews</span></div>}
-          <div className="detail-benefits"><div><span><ShieldCheck size={18} /></span><div><strong>Carefully vetted</strong><small>Trusted by your neighbourhood</small></div></div><div><span><Clock3 size={18} /></span><div><strong>{service.eta}</strong><small>Choose a time that works for you</small></div></div><div><span><MapPin size={18} /></span><div><strong>Available nearby</strong><small>{location ? `Serving ${location.label}` : 'Choose your area to see nearby availability'}</small></div></div></div>
+          <div className="detail-benefits"><div><span><ShieldCheck size={18} /></span><div><strong>Service information</strong><small>Provider details depend on confirmed listings</small></div></div><div><span><Clock3 size={18} /></span><div><strong>{service.eta}</strong><small>Estimated duration shown for reference</small></div></div><div><span><MapPin size={18} /></span><div><strong>Pre-launch preview</strong><small>Service availability is not yet confirmed</small></div></div></div>
         </div>
         <aside className="booking-card">
           <span className="booking-label">{service.kind === 'product' ? 'A GOOD THING TO HAVE' : 'YOUR NEXT GOOD EXPERIENCE'}</span>

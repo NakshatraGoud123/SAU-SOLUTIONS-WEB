@@ -71,7 +71,7 @@ function RouteContent() {
           <Route path="/service-area" element={<ServiceArea />} />
           <Route path="/what-we-offer" element={<WhatWeOffer />} />
           <Route path="/admin" element={<Admin />} />
-          <Route path="*" element={<Categories />} />
+          <Route path="*" element={<AppComingSoon notFound />} />
         </Routes>
       </Suspense>
     </motion.main>

@@ -100,13 +100,13 @@ export default function Booking() {
 
   return <div className="flow-page container">
     <Link className="back-link" to={`/service/${service.id}`}><ArrowLeft size={15} /> Back to service</Link>
-    <div className="flow-heading"><span className="section-kicker">YOUR NEXT GOOD EXPERIENCE</span><h1>Book a service</h1><p>Choose a time and tell us where the professional can find you.</p></div>
+    <div className="flow-heading"><span className="section-kicker">YOUR NEXT GOOD EXPERIENCE</span><h1>Request a service</h1><p>Submit a preferred time and address for this service. Availability must be confirmed.</p></div>
     <div className="cart-layout checkout-layout">
       <form className="flow-form" onSubmit={submit}>
         <div className="booking-service-preview"><span className={`cart-product-art art-${service.tone}`}><IconGlyph name={service.icon} size={25} /></span><span><small>BOOKING</small><strong>{service.name}</strong></span><strong>₹{service.price.toLocaleString('en-IN')}</strong></div>
-        <h2>Choose a date & time</h2>
+        <h2>Request a date & time</h2>
         <label className="date-field">Preferred date<input required type="date" min={minBookingDate} value={date} onChange={(event) => setDate(event.target.value)} /></label>
-        <fieldset className="time-slots"><legend>Available time slots</legend>{timeSlots.map((slot) => <label key={slot} className={time === slot ? 'time-slot selected' : 'time-slot'}><input type="radio" name="slot" required checked={time === slot} onChange={() => setTime(slot)} />{slot}</label>)}</fieldset>
+        <fieldset className="time-slots"><legend>Preferred time slots</legend>{timeSlots.map((slot) => <label key={slot} className={time === slot ? 'time-slot selected' : 'time-slot'}><input type="radio" name="slot" required checked={time === slot} onChange={() => setTime(slot)} />{slot}</label>)}</fieldset>
         <h2>Your address</h2>
         {savedAddresses.length > 0 && <label>Saved address<select value={selectedAddressId} onChange={(event) => {
           const nextId = event.target.value
@@ -122,8 +122,8 @@ export default function Booking() {
           <label>PIN code<input required inputMode="numeric" autoComplete="postal-code" maxLength={6} pattern="\d{6}" value={address.postalCode} onChange={(event) => updateAddress('postalCode', event.target.value)} /></label>
         </div>
         {error && <p className="form-error" role="alert">{error}</p>}
-        <div className="payment-note"><ShieldCheck size={18} /><span><strong>Trusted, local professionals.</strong><small>Your request is saved to your SAU account.</small></span></div>
-        <button className="button button-primary" type="submit" disabled={saving}>{saving ? 'Saving booking…' : 'Confirm booking'} <ArrowRight size={16} /></button>
+        <div className="payment-note"><ShieldCheck size={18} /><span><strong>Pre-launch request</strong><small>Submitting saves this request to your SAU account; it does not confirm provider availability.</small></span></div>
+        <button className="button button-primary" type="submit" disabled={saving}>{saving ? 'Saving booking…' : 'Submit booking request'} <ArrowRight size={16} /></button>
       </form>
       <aside className="flow-summary"><span className="section-kicker">BOOKING SUMMARY</span><h2>At a glance.</h2><div className="summary-row"><span>Service</span><strong>{service.name}</strong></div><div className="summary-row"><span>Duration</span><strong>{service.eta}</strong></div><div className="summary-total"><span>Starting at</span><strong>₹{service.price.toLocaleString('en-IN')}</strong></div><p className="summary-note"><CheckCircle2 size={14} /> Final pricing is confirmed before work begins.</p></aside>
     </div>
