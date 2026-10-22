@@ -1,105 +1,148 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sau Solution – Trusted local help in your neighbourhood</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="prog" id="pg"></div>
+<header><div class="wrap nav">
+<a href="#top" class="logo"><i>S</i>Sau Solution</a>
+<nav><ul><li><a href="#how">How it works</a></li><li><a href="#services">Services</a></li><li><a href="#vendors">For vendors</a></li><li><a href="#about">About us</a></li><li><a href="#faq">FAQ</a></li><li><a href="#contact">Contact</a></li></ul></nav>
+<div style="display:flex;align-items:center"><button class="tg" id="tg" aria-label="Switch light or dark theme">◐</button><button class="btn" data-open>Request a service</button></div>
+</div></header>
 
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0"
-    />
+<main id="top">
+<div class="hero"><div class="wrap">
+<div>
+<h1>Trusted local help, right in your neighbourhood.</h1>
+<p>Need a welder, electrician, mechanic or a nearby shop? Sau Solution connects you with verified skilled people and vendors around you, and lets you book in minutes.</p>
+<div class="search"><input id="q" placeholder="What do you need? e.g. welder, plumber" autocomplete="off" aria-label="Search for a service"><button class="btn" id="qb" type="button">Search</button><ul id="sg"></ul></div>
+<div class="cta"><button class="btn" data-open>Request a service</button><a class="btn alt" href="#vendors">Join as a vendor</a></div>
+<small>Now serving Hyderabad. Free to request. You pay only the vendor’s agreed price. App coming soon: our team arranges your booking today.</small>
+</div>
+<div class="mapcard" aria-label="Animation: nearby vendors appearing on a map and a booking being confirmed">
+<svg viewBox="0 0 400 420" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g stroke="var(--road)" stroke-width="14" fill="none" stroke-linecap="round"><path d="M-10 90 L410 130"/><path d="M-10 270 L410 230"/><path d="M110 -10 L150 430"/><path d="M290 -10 L250 430"/></g><g stroke="var(--road)" stroke-width="6" fill="none"><path d="M-10 180 L410 190"/><path d="M200 -10 L205 430"/><path d="M-10 340 L410 350"/></g><circle cx="200" cy="235" r="120" fill="none" stroke="var(--teal)" stroke-opacity=".35" stroke-dasharray="5 7"/></svg>
+<div class="pin" style="left:24%;top:28%;animation-delay:.6s"><span>🔧 Welder · 0.4 km</span><b></b></div>
+<div class="pin" style="left:72%;top:24%;animation-delay:1.2s"><span>⚡ Electrician · 0.9 km</span><b></b></div>
+<div class="pin" style="left:78%;top:58%;animation-delay:1.8s"><span>✏️ Stationery · 0.3 km</span><b></b></div>
+<div class="pin" style="left:25%;top:66%;animation-delay:2.4s"><span>🛠️ Mechanic · 0.7 km</span><b></b></div>
+<div class="you"></div>
+<div class="book"><div class="av">R</div><div><strong>Verified welder (example)</strong><small>Sample booking preview</small></div><em>Book</em></div>
+</div>
+</div></div>
 
-    <meta
-      name="theme-color"
-      content="#f7f9fc"
-    />
+<section id="services"><div class="wrap">
+<h2>Whatever you need, someone nearby can do it.</h2>
+<p class="lead">From daily shop items to skilled repair work, find it all within your locality.</p>
+<div class="cats">
+<div class="cat"><span>🔧</span>Welders</div><div class="cat"><span>⚡</span>Electricians</div><div class="cat"><span>🚿</span>Plumbers</div><div class="cat"><span>🛠️</span>Mechanics</div><div class="cat"><span>🪚</span>Carpenters</div><div class="cat"><span>🎨</span>Painters</div><div class="cat"><span>✏️</span>Stationery shops</div><div class="cat"><span>➕</span>And many more</div>
+</div></div></section>
 
-    <script>
-      try {
-        const savedTheme = localStorage.getItem('sau-theme-v1');
-        document.documentElement.dataset.theme = savedTheme === 'dark' || savedTheme === 'light'
-          ? savedTheme
-          : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-      } catch {
-        document.documentElement.dataset.theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      }
-    </script>
+<section id="how" class="alt-bg"><div class="wrap">
+<h2>Book a local expert in three steps.</h2>
+<p class="lead">No searching around, no guesswork about who to trust.</p>
+<div class="steps">
+<div class="step"><h3>Request</h3><p>Tell us what you need, where, and when. It takes about a minute.</p></div>
+<div class="step"><h3>Match</h3><p>Our team picks a verified vendor near you and confirms the price and time by call or WhatsApp.</p></div>
+<div class="step"><h3>Get it done</h3><p>The vendor comes to you, or you visit their shop. Rate them afterwards.</p></div>
+</div></div></section>
 
-    <!-- Primary SEO Metadata -->
-    <title>SAU SOLUTIONS | Local Services & Vendors in Hyderabad</title>
+<section><div class="wrap trust">
+<div>
+<h2>Genuine people only. That is our promise.</h2>
+<p class="lead">Anyone can claim to be a professional. We check before they appear in the app.</p>
+<ul class="checks">
+<li><div><b>Identity check</b>Government ID and phone number verified.</div></li>
+<li><div><b>Work check</b>Skills and shop details confirmed by our team.</div></li>
+<li><div><b>Real reviews</b>Ratings from real customers, coming soon.</div></li>
+<li><div><b>Support when needed</b>Report a problem and we step in.</div></li>
+</ul></div>
+<div class="vcard"><h3>Verified by Sau Solution</h3><p>Look for this mark on every vendor profile.</p><span class="badge">🪪 ID checked</span><span class="badge">📞 Phone verified</span><span class="badge">🛠️ Skills confirmed</span><span class="badge">⭐ Reviews coming soon</span></div>
+</div></section>
 
-    <meta
-      name="description"
-      content="Discover SAU SOLUTIONS and SAU SERVICES in Hyderabad. Connect with local vendors, shops, service professionals, mechanics, and delivery partners."
-    />
+<section id="vendors" class="alt-bg"><div class="wrap vendor">
+<div>
+<h2>Skilled or running a shop? Get more customers.</h2>
+<p class="lead">Join Sau Solution for free. Customers in your area will find you, call you and book you, without you spending on ads.</p>
+<ul class="checks"><li><div><b>Your own profile</b>Show your work, prices and ratings.</div></li><li><div><b>Nearby bookings</b>Get jobs from people in your locality.</div></li><li><div><b>Build your name</b>Good reviews bring repeat customers.</div></li></ul>
+</div>
+<form id="vform"><label>Full name<input required name="n" autocomplete="name" placeholder="Your full name"></label>
+<label>Phone number<input required name="p" type="tel" inputmode="tel" autocomplete="tel" placeholder="Your phone number"></label>
+<label>Your skill or shop type<select name="s" required><option value="" disabled selected>Choose a skill or shop type</option><option>Welder</option><option>Electrician</option><option>Plumber</option><option>Mechanic</option><option>Carpenter</option><option>Stationery shop</option><option>Other</option></select></label>
+<label>Area or locality<input required name="a" autocomplete="address-level2" placeholder="Your area in Hyderabad"></label>
+<small style="color:var(--muted)">By registering, you agree to our <a href="#privacy" style="text-decoration:underline">Privacy Policy</a> and <a href="#terms" style="text-decoration:underline">Terms</a>.</small>
+<button class="btn" type="submit">Register as a vendor</button>
+<div class="ok" id="vok" role="status" aria-live="polite"><p>Your message is ready. Send it to Sau Solution on WhatsApp to complete your registration.</p><a id="vw" class="btn" target="_blank" rel="noopener" style="margin-top:12px;background:#25d366">Send on WhatsApp</a></div></form>
+</div></section>
 
-    <meta name="robots" content="index, follow" />
+<section id="about"><div class="wrap">
+<h2>Built by three founders from the neighbourhood.</h2>
+<p class="lead">We saw good local workers losing jobs for want of visibility, and families struggling to find someone reliable. Sau Solution fixes both.</p>
+<div class="team">
+<div class="person"><h3>Mohammed Ibrahim</h3></div>
+<div class="person"><h3>Abdul Shahad</h3></div>
+<div class="person"><h3>D. Nakshatra</h3></div>
+</div></div></section>
 
-    <link rel="canonical" href="https://sausolution.com/" />
+<section class="alt-bg" id="contact"><div class="wrap" style="text-align:center">
+<h2 style="margin:0 auto">Ready to find help nearby?</h2>
+<p class="lead" style="margin:14px auto 28px">Tell us what you need. We will find a verified vendor near you.</p>
+<button class="btn" data-open>Request a service</button>
+</div></section>
+<section id="faq"><div class="wrap"><h2>Questions people ask us</h2><p class="lead">Short, honest answers.</p>
+<details><summary>How do you verify vendors?</summary><p>Before a vendor is listed, we check their ID and phone number, confirm their skills and ask for examples of past work.</p></details>
+<details><summary>What does it cost?</summary><p>It is free to request. You pay only the vendor’s agreed price. We currently charge customers no extra fee.</p></details>
+<details><summary>How soon will someone contact me?</summary><p>Our team reads every request and aims to reply on the same day by call or WhatsApp.</p></details>
+<details><summary>Is the app available?</summary><p>Not yet. For now our team arranges every booking by phone and WhatsApp. Leave your number to hear when the app launches.</p></details>
+<details><summary>Which areas do you serve?</summary><p>We are starting in Hyderabad.</p></details>
+<details><summary>What if the work is not good?</summary><p>Tell us straight away. We will speak to the vendor and help sort it out, though we cannot promise a particular result.</p></details>
+<details><summary>How can I join as a vendor?</summary><p>Fill in the vendor form on this page. Our team will call you to verify your details.</p></details>
+<div class="report"><b>Had a problem with a vendor or booking?</b><p>Tell us and we will look into it.</p><a class="btn" href="https://wa.me/919963182721?text=Hi%20Sau%20Solution%2C%20I%20want%20to%20report%20a%20problem." target="_blank" rel="noopener">Report a problem</a></div></div></section>
+<section id="privacy" class="legal"><div class="wrap"><h2>Privacy Policy</h2><p>Last updated: 22 October 2026</p>
+<h3>Who we are</h3><p>Sau Solution (“we”, “us”) is a local-services startup in Hyderabad, India. We connect customers with verified local vendors and skilled people.</p>
+<h3>What we collect</h3><ul><li>From customers: your name, phone number, area, the service you need, your preferred time and a description of the problem.</li><li>From vendors: your name, phone number, skill or shop type, locality, and later the ID and work details we need to verify you.</li></ul>
+<h3>Why we use it</h3><p>We use your details only to arrange your request, match you with a vendor, verify vendors, contact you about your request, tell you when our app launches, and improve our service.</p>
+<h3>Who we share it with</h3><p>We share only what is needed with the vendor matched to your job (your name, phone number, area and job details). We do not sell your personal data. When you message us on WhatsApp, WhatsApp’s own terms also apply.</p>
+<h3>How long we keep it</h3><p>We keep your details only as long as needed for the purposes above, and then delete them.</p>
+<h3>Your choices</h3><p>You can ask us to show, correct or delete your data, or withdraw your consent at any time. Message or call us on +91 99631 82721 and we will respond within a reasonable time. Withdrawing is as easy as agreeing.</p>
+<h3>Children</h3><p>Our service is for people aged 18 and above. We do not knowingly collect data from children.</p>
+<h3>Security and changes</h3><p>We take reasonable steps to protect your data. If this policy changes, the new version will appear on this page.</p></div></section>
+<section id="terms" class="legal alt-bg"><div class="wrap"><h2>Terms of Use</h2><p>Last updated: 22 October 2026</p>
+<h3>What Sau Solution does</h3><p>We help connect customers with independent local vendors and skilled people. Vendors are not our employees. They run their own work and are responsible for it.</p>
+<h3>Verification</h3><p>We check each vendor’s identity, phone number and skills before listing them. We take care in doing this, but we cannot guarantee the result of every job. Please check the work before you pay.</p>
+<h3>Requests and bookings</h3><p>A request is not a confirmed booking. A booking is confirmed only when our team confirms the vendor, price and time with you.</p>
+<h3>Prices and payment</h3><p>The price is agreed between you and the vendor. We currently charge customers no extra fee. If we introduce a fee, we will tell you before you book. Pay the vendor directly unless we tell you otherwise.</p>
+<h3>Customers</h3><p>Give accurate details, give safe access to the place of work, and treat vendors with respect.</p>
+<h3>Vendors</h3><p>Give true information and documents, do honest work at fair prices, and be polite and on time. We may remove vendors who break these terms.</p>
+<h3>Complaints</h3><p>If something goes wrong, contact us on +91 99631 82721. We will help resolve it but cannot promise a particular outcome.</p>
+<h3>Limits and law</h3><p>To the extent the law allows, we are not responsible for indirect losses, or for a vendor’s work. These terms follow the laws of India, and the courts in Hyderabad, Telangana have jurisdiction.</p></div></section>
+</main>
 
-    <!-- Favicon -->
-    <link
-      rel="icon"
-      type="image/svg+xml"
-      href="%BASE_URL%favicon.svg"
-    />
+<footer><div class="wrap">
+<div><h4>Sau Solution</h4><p style="max-width:26em;opacity:.85">Verified local vendors and skilled people in Hyderabad, one tap away.</p></div>
+<div><h4>Explore</h4><a href="#how">How it works</a><a href="#services">Services</a><a href="#vendors">For vendors</a><a href="#about">About us</a></div>
+<div><h4>Contact</h4><a href="tel:+919963182721">+91 99631 82721</a><a href="https://wa.me/919963182721?text=Hi%20Sau%20Solution%2C%20I%20want%20to%20report%20a%20problem." target="_blank" rel="noopener">Report a problem</a><a href="#privacy">Privacy policy</a><a href="#terms">Terms of use</a></div>
+<div class="copy">© 2026 Sau Solution. All rights reserved.</div>
+</div></footer>
 
-    <!-- Open Graph Metadata (Social Sharing) -->
-    <meta
-      property="og:type"
-      content="website"
-    />
+<a class="wa" href="https://wa.me/919963182721" target="_blank" rel="noopener">💬 Chat with us</a>
+<dialog id="dlg"><button class="close" aria-label="Close" data-close>×</button>
+<div id="step1"><h3>Welcome to Sau Solution</h3><p style="color:var(--muted);margin:0">What would you like to do?</p>
+<button class="opt" data-go="c"><b>Request a service now</b><small>Free. Our team arranges a verified vendor for you</small></button>
+<button class="opt" data-go="w"><b>Notify me when the app launches</b><small>App coming soon</small></button>
+<button class="opt" data-go="v"><b>I offer a service</b><small>Register as a vendor or skilled professional</small></button></div>
+<div id="step2" style="display:none"><h3>Request a service</h3><p style="color:var(--muted);margin:0 0 14px">Free to request. You pay only the vendor’s agreed price, with no extra fee from us. Our team will confirm a verified vendor with you.</p>
+<form id="cform"><label>Name<input required name="n" autocomplete="name" placeholder="Your full name"></label><label>Phone number<input required type="tel" inputmode="tel" name="p" autocomplete="tel" placeholder="Your phone number"></label><label>Service needed<select name="sv" required><option value="" disabled selected>Choose a service</option><option>Welder</option><option>Electrician</option><option>Plumber</option><option>Mechanic</option><option>Carpenter</option><option>Painter</option><option>Stationery items</option><option>Other</option></select></label><label>Your area<input required name="a" autocomplete="address-level2" placeholder="Your area in Hyderabad"></label><label>Preferred date<input type="date" name="date"></label><label>Preferred time<input type="time" name="time"></label><label>What is the problem?<textarea name="d" rows="3" placeholder="A short description"></textarea></label><small style="color:var(--muted)">By continuing, you agree to our <a href="#privacy" style="text-decoration:underline">Privacy Policy</a> and <a href="#terms" style="text-decoration:underline">Terms</a>.</small><button class="btn" type="submit">Continue</button></form>
+<div class="ok" id="cok" role="status">Almost done. Send your request to our team on WhatsApp so we can start matching. <a id="wl" class="btn" target="_blank" rel="noopener" style="margin-top:12px;background:#25d366">Send on WhatsApp</a></div></div>
+<div id="step3" style="display:none"><h3>Get notified about the app</h3><p style="color:var(--muted);margin:0 0 14px">The app is coming soon. Leave your number and we will message you at launch.</p><form id="wform"><label>Name<input required name="n" autocomplete="name" placeholder="Your full name"></label><label>Phone number<input required type="tel" inputmode="tel" name="p" autocomplete="tel" placeholder="Your phone number"></label><label>Your area<input required name="a" autocomplete="address-level2" placeholder="Your area in Hyderabad"></label><small style="color:var(--muted)">By continuing, you agree to our <a href="#privacy" style="text-decoration:underline">Privacy Policy</a> and <a href="#terms" style="text-decoration:underline">Terms</a>.</small><button class="btn" type="submit">Notify me</button></form><div class="ok" id="wok" role="status" aria-live="polite"><p>Your message is ready. Send it to Sau Solution on WhatsApp to request a launch notification.</p><a id="ww" class="btn" target="_blank" rel="noopener" style="margin-top:12px;background:#25d366">Send on WhatsApp</a></div></div>
+</dialog>
 
-    <meta
-      property="og:url"
-      content="https://sausolution.com/"
-    />
-
-    <meta
-      property="og:site_name"
-      content="SAU SOLUTIONS"
-    />
-
-    <meta
-      property="og:title"
-      content="SAU SOLUTIONS | Local Services, Vendors & Delivery"
-    />
-
-    <meta
-      property="og:description"
-      content="Explore SAU SERVICES and connect with local vendors, shops, mechanics, service professionals, and delivery partners in Hyderabad."
-    />
-
-    <meta
-      property="og:image"
-      content="https://sausolution.com/og-image.png"
-    />
-
-    <!-- Twitter / X Sharing Metadata -->
-    <meta
-      name="twitter:card"
-      content="summary_large_image"
-    />
-
-    <meta
-      name="twitter:title"
-      content="SAU SOLUTIONS | Local Services & Vendors"
-    />
-
-    <meta
-      name="twitter:description"
-      content="Discover local vendors, shops, service professionals, mechanics, and delivery partners with SAU SOLUTIONS in Hyderabad."
-    />
-
-    <meta
-      name="twitter:image"
-      content="https://sausolution.com/og-image.png"
-    />
-
-    <!-- Application Entry Point -->
-    <script type="module" src="/src/main.tsx"></script>
-  </head>
-
-  <body>
-    <div id="root"></div>
-  </body>
+<script src="script.js"></script>
+</body>
 </html>
