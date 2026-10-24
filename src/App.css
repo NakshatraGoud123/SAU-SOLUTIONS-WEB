@@ -7,6 +7,7 @@
 @keyframes loading-bounce { to { opacity: .35; transform: translateY(-7px); } }
 .navbar { height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 26px; }
 .wordmark { display: inline-flex; align-items: center; gap: 10px; flex: 0 0 auto; }
+.brand-logo { display: block; width: 48px; height: 48px; flex: 0 0 auto; object-fit: cover; border-radius: 12px; }
 .brand-mark { display: flex; align-items: end; gap: 3px; width: 29px; height: 27px; padding: 3px; border-radius: 8px; background: #edf2ff; }
 .brand-mark i, .brand-mark span { display: block; width: 6px; border-radius: 5px; background: #3568ee; transform: skew(-22deg); }
 .brand-mark span:nth-child(1) { height: 12px; opacity: .65; }
@@ -779,6 +780,7 @@
 @media (max-width: 430px) {
   .container { width: calc(100% - 32px); }
   .brand-mark { width: 26px; height: 25px; }
+  .brand-logo { width: 42px; height: 42px; border-radius: 10px; }
   .brand-name { font-size: 12px; }
   .brand-name > span { font-size: 9px; }
   .brand-name small { font-size: 6px; }
