@@ -15,7 +15,7 @@ export default function Footer() {
       <div className="container footer-main">
         <div className="footer-brand-column">
           <Link className="wordmark footer-wordmark" to="/">
-            <span className="brand-mark"><span /><span /><span /></span>
+            <img className="brand-logo" src={`${import.meta.env.BASE_URL}sau-logo.jpeg`} alt="" />
             <span className="brand-name">SAU<span>SOLUTIONS</span><small>ALL SERVICES IN ONE APP</small></span>
           </Link>
           <p>More time for what matters.<br />A little less to figure out.</p>

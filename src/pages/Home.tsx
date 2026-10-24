@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom'
 import Hero from '../components/Hero'
 import CategoryCard from '../components/CategoryCard'
 import ServiceCard from '../components/ServiceCard'
-import { foundingTeam } from '../data/team'
 import { useCatalog } from '../context/useCatalog'
 
 const platformAreas = [
@@ -27,7 +26,7 @@ export default function Home() {
       <section className="section platform-section">
         <div className="container">
           <div className="section-heading">
-            <div><span className="section-kicker">SAU SOLUTIONS PLATFORM</span><h2>Everyday needs, <span>in one place.</span></h2><p>Explore services, products and partner information through the existing SAU Solutions experience.</p></div>
+            <div><span className="section-kicker">SAU SOLUTIONS</span><h2>Everyday needs, <span>in one place.</span></h2><p>Discover the SAU SERVICES platform, explore planned local categories and learn how businesses can express interest in becoming a partner.</p></div>
           </div>
           <div className="ecosystem-grid platform-grid">
             {platformAreas.map(({ title, description, icon: Icon, href, action }) => <article className="ecosystem-card platform-card" key={title}>
@@ -41,7 +40,7 @@ export default function Home() {
       <section className="section category-section" id="categories">
         <div className="container">
           <div className="section-heading">
-            <div><span className="section-kicker">HERE FOR YOUR EVERYDAY</span><h2>One place for <span>all the things.</span></h2><p>Find the right help, essentials and little life upgrades — all close to home.</p></div>
+            <div><span className="section-kicker">DESIGNED AROUND EVERYDAY NEEDS</span><h2>Local services and essentials, <span>in one place.</span></h2><p>Explore planned categories for household needs, essential products and local services.</p></div>
             <Link to="/categories" className="text-link">Explore all categories <ArrowRight size={16} /></Link>
           </div>
           {error && <p className="form-error" role="alert">{error}</p>}
@@ -72,37 +71,6 @@ export default function Home() {
       <section className="container promo-panels">
         <article className="partner-panel" id="partner"><span className="section-kicker">FOR LOCAL PROFESSIONALS & BUSINESSES</span><h2>Tell us what<br />you bring to SAU.</h2><p>See partner information for independent professionals, local businesses and service teams.</p><Link className="button button-dark" to="/partner/register">Partner information <ArrowRight size={15} /></Link><span className="partner-decoration"><Sparkles size={35} /></span></article>
         <article className="app-panel" id="download"><span className="app-icon"><Smartphone size={24} /></span><span className="section-kicker">SAU SERVICES</span><h2>A connected<br />local platform.</h2><p>Browse the current catalog and learn more about the SAU SERVICES customer app pre-launch.</p><Link className="app-link" to="/app-coming-soon">App information <ArrowRight size={14} /></Link><span className="app-decoration">s<span>.</span></span></article>
-      </section>
-
-      <section className="team-section container" id="about">
-        <div className="section-heading team-heading">
-          <div>
-            <span className="section-kicker">MEET OUR TEAM</span>
-            <h2>Founding <span>leaders.</span></h2>
-          </div>
-        </div>
-        <div className="team-grid">
-          {foundingTeam.map((member) => (
-            <article className="team-card" key={member.id}>
-              <div className="team-avatar" role="img" aria-label={`Portrait placeholder for ${member.name}`}>{member.initials}</div>
-              <div className="team-content">
-                <h3>{member.name}</h3>
-                <p className="team-designation">{member.designation}</p>
-                <p>{member.bio}</p>
-                <ul>
-                  {member.responsibilities.map((responsibility) => (
-                    <li key={responsibility}>{responsibility}</li>
-                  ))}
-                </ul>
-                {member.linkedin ? (
-                  <a href={member.linkedin} target="_blank" rel="noreferrer">LinkedIn profile</a>
-                ) : (
-                  <span className="team-placeholder">LinkedIn link to be provided</span>
-                )}
-              </div>
-            </article>
-          ))}
-        </div>
       </section>
 
       <section className="cta-section container" id="about-cta">
