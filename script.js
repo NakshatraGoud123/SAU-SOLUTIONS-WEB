@@ -10,7 +10,7 @@ document.getElementById('vform').onsubmit=e=>{e.preventDefault();const f=new For
 const svc={'Welders':'Welder','Electricians':'Electrician','Plumbers':'Plumber','Mechanics':'Mechanic','Carpenters':'Carpenter','Painters':'Painter','Stationery shops':'Stationery items','And many more':'Other'};
 document.querySelectorAll('.cat').forEach(c=>{c.tabIndex=0;c.setAttribute('role','button');c.style.cursor='pointer';const go=()=>{document.querySelector('[data-open]').click();s1.style.display='none';s2.style.display='';document.querySelector('#cform select').value=svc[c.lastChild.textContent.trim()]||'Other'};c.onclick=go;c.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}}});
 const tg=document.getElementById('tg');
-function setTheme(theme,save=false){document.documentElement.dataset.theme=theme;const dark=theme==='dark';tg.textContent=dark?'☀':'☾';tg.setAttribute('aria-label',dark?'Switch to light theme':'Switch to dark theme');if(save){try{localStorage.setItem('sau-theme',theme)}catch{}}}
+function setTheme(theme,save=false){document.documentElement.dataset.theme=theme;const dark=theme==='dark';document.querySelectorAll('[data-light-logo]').forEach(logo=>{logo.src=dark?logo.dataset.darkLogo:logo.dataset.lightLogo});tg.textContent=dark?'☀':'☾';tg.setAttribute('aria-label',dark?'Switch to light theme':'Switch to dark theme');if(save){try{localStorage.setItem('sau-theme',theme)}catch{}}}
 const colorPreference=window.matchMedia('(prefers-color-scheme: dark)');
 let themeOverride=false;
 try{const savedTheme=localStorage.getItem('sau-theme');if(savedTheme==='dark'||savedTheme==='light'){themeOverride=true;setTheme(savedTheme)}else if(colorPreference.matches)setTheme('dark')}catch{if(colorPreference.matches)setTheme('dark')}
