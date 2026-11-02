@@ -32,8 +32,7 @@ export default function Navbar() {
     <header className="site-header">
       <nav className="navbar container" aria-label="Main navigation">
         <Link className="wordmark" to="/" onClick={() => setMenuOpen(false)} aria-label="SAU Solutions home">
-          <img className="brand-logo" src={`${import.meta.env.BASE_URL}sau-logo.jpeg`} alt="" />
-          <span className="brand-name">SAU<span>SOLUTIONS</span><small>ALL SERVICES IN ONE APP</small></span>
+          <img className="brand-logo" src={`${import.meta.env.BASE_URL}${theme === 'dark' ? 'sau-logo-horizontal-dark.png' : 'sau-logo-horizontal.png'}`} alt="" />
         </Link>
         <div className={`nav-links ${menuOpen ? 'nav-links-open' : ''}`}>
           {links.map((link) => link.href.startsWith('/#')

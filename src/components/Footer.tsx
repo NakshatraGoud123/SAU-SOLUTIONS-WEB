@@ -1,5 +1,6 @@
 import { ArrowRight, MoveUpRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { usePreferences } from '../context/usePreferences'
 
 const SUPPORT_EMAIL = 'Sausolution.support@gmail.com'
 const footerGroups = [
@@ -10,13 +11,14 @@ const footerGroups = [
 const currentYear = new Date().getFullYear()
 
 export default function Footer() {
+  const { theme } = usePreferences()
+
   return (
     <footer className="site-footer">
       <div className="container footer-main">
         <div className="footer-brand-column">
           <Link className="wordmark footer-wordmark" to="/">
-            <img className="brand-logo" src={`${import.meta.env.BASE_URL}sau-logo.jpeg`} alt="" />
-            <span className="brand-name">SAU<span>SOLUTIONS</span><small>ALL SERVICES IN ONE APP</small></span>
+            <img className="brand-logo" src={`${import.meta.env.BASE_URL}${theme === 'dark' ? 'sau-logo-horizontal-dark.png' : 'sau-logo-horizontal.png'}`} alt="SAU Solutions — Everything Local. Made Easy." />
           </Link>
           <p>More time for what matters.<br />A little less to figure out.</p>
           <a className="footer-contact" href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL} <MoveUpRight size={14} /></a>
